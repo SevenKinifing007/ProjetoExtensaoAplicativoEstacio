@@ -166,6 +166,53 @@ Este guia contém TODOS os passos necessários para instalar, configurar e execu
 
 #### ⚠️ Solução de Problemas:
 
+**Erro: "O arquivo npm.ps1 não pode ser carregado" ou "não está assinado digitalmente"**
+
+Este é um erro comum de **Política de Execução do PowerShell** no Windows.
+
+**Solução 1: Alterar Política de Execução (Recomendado)**
+
+1. **Feche o PowerShell atual**
+
+2. **Abra o PowerShell como Administrador:**
+   - Pressione `Win + X`
+   - Escolha **"Windows PowerShell (Admin)"** ou **"Terminal (Admin)"**
+   - Clique em **"Sim"** na janela de permissão
+
+3. **Execute este comando:**
+   ```powershell
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
+
+4. **Quando perguntar, digite `S` e pressione Enter**
+
+5. **Feche o PowerShell Admin e abra um PowerShell normal**
+
+6. **Teste novamente:**
+   ```powershell
+   npm --version
+   ```
+
+**Solução 2: Usar o Prompt de Comando (CMD)**
+
+Se preferir não alterar a política do PowerShell:
+
+1. Pressione `Win + R`
+2. Digite: `cmd`
+3. Pressione Enter
+4. Execute: `npm --version`
+
+O CMD não tem as restrições do PowerShell.
+
+**Solução 3: PowerShell com Bypass (Temporário)**
+
+1. Pressione `Win + R`
+2. Digite: `powershell -ExecutionPolicy Bypass`
+3. Pressione Enter
+4. Execute: `npm --version`
+
+---
+
 **Erro: "node não é reconhecido como comando"**
 
 **Solução 1:** Reiniciar o PowerShell/Terminal
