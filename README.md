@@ -7,44 +7,19 @@ Aplicativo mobile desenvolvido para consulta de dados de **Licitações**, **Dis
 
 ---
 
-## 🚀 COMEÇANDO AGORA?
-
-**Se você é iniciante e nunca programou, comece por aqui:**
-
-### 📖 Guias Disponíveis:
-
-1. **[TUTORIAL COMPLETO](./TUTORIAL-COMPLETO.md)** 👈 **COMECE AQUI!**
-   - Guia ultra detalhado do zero ao aplicativo rodando
-   - Para quem nunca programou antes
-   - Passo a passo com explicações simples
-   - Tempo estimado: 30-45 minutos
-
-2. **[GUIA RÁPIDO](./GUIA-RAPIDO.md)** 👈 **Para Consulta Rápida**
-   - Checklist e referência rápida
-   - Comandos importantes
-   - Solução de problemas
-   - Imprima e tenha sempre à mão!
-
-3. **[README Completo](./README.md)** 👈 **Documentação Técnica**
-   - Você está aqui!
-   - Informações técnicas detalhadas
-   - Para consulta avançada
-
----
-
 ## 📋 Índice
 
 - [Sobre o Projeto](#-sobre-o-projeto)
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Funcionalidades](#-funcionalidades)
-- [Pré-requisitos](#-pré-requisitos)
-- [Instalação](#-instalação)
-- [Como Executar](#-como-executar)
+- [Guia de Instalação e Execução](#-guia-de-instalação-e-execução)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [API do PNCP](#-api-do-pncp)
-- [Guia para Iniciantes](#-guia-para-iniciantes)
+- [Desenvolvimento e Debug](#-desenvolvimento-e-debug)
 - [Build para Android](#-build-para-android)
+- [Comparação: React Native vs Xamarin](#-comparação-react-native-vs-xamarin)
 - [Contribuindo](#-contribuindo)
+- [Histórico de Versões](#-histórico-de-versões)
 - [Licença](#-licença)
 
 ---
@@ -125,97 +100,203 @@ TypeScript é uma linguagem fortemente tipada, similar ao C#, que oferece:
 
 ---
 
-## 📦 Pré-requisitos
+## 🚀 Guia de Instalação e Execução
 
-Antes de começar, você precisa ter instalado em sua máquina:
+### Pré-requisitos
 
-### Obrigatórios
+Antes de começar, você precisa ter instalado:
 
 1. **Node.js** (versão 18 ou superior)
-   - Download: https://nodejs.org/
-   - Verificar instalação: `node --version`
-
-2. **NPM** (vem com o Node.js)
-   - Verificar instalação: `npm --version`
-
+2. **Visual Studio Code**
 3. **Git**
-   - Download: https://git-scm.com/
-   - Verificar instalação: `git --version`
-
-### Recomendados
-
-4. **Visual Studio Code** (IDE recomendada)
-   - Download: https://code.visualstudio.com/
-   - Extensões recomendadas:
-     - React Native Tools
-     - ESLint
-     - Prettier
-     - TypeScript and JavaScript Language Features
-
-5. **Expo Go** (para testar no celular)
-   - Android: https://play.google.com/store/apps/details?id=host.exp.exponent
-   - iOS: https://apps.apple.com/app/expo-go/id982107779
+4. **Expo Go** (aplicativo no celular Android)
 
 ---
 
-## 🚀 Instalação
+### PASSO 1: Instalar Node.js
 
-### Passo 1: Clonar o Repositório
+1. Acesse: https://nodejs.org/
+2. Baixe a versão **LTS** (Long Term Support)
+3. Execute o instalador
+4. Durante a instalação, marque a opção **"Automatically install the necessary tools"**
+5. Siga as instruções e conclua a instalação
+
+**Verificar instalação:**
+
+Abra o PowerShell (Windows) ou Terminal (Mac/Linux) e execute:
 
 ```bash
-git clone https://github.com/SevenKinifing007/ProjetoExtensaoAplicativoEstacio.git
-cd ProjetoExtensaoAplicativoEstacio
+node --version
+# Deve mostrar: v22.x.x ou superior
+
+npm --version
+# Deve mostrar: 10.x.x ou superior
 ```
 
-### Passo 2: Instalar Dependências
+---
+
+### PASSO 2: Instalar Git
+
+1. Acesse: https://git-scm.com/download/win
+2. Baixe o instalador para seu sistema operacional
+3. Execute o instalador com as opções padrão
+4. Conclua a instalação
+
+**Verificar instalação:**
+
+```bash
+git --version
+# Deve mostrar: git version 2.x.x
+```
+
+---
+
+### PASSO 3: Instalar Visual Studio Code
+
+1. Acesse: https://code.visualstudio.com/
+2. Baixe o instalador para Windows
+3. Durante a instalação, marque as opções:
+   - ✅ Add "Open with Code" action to Windows Explorer file context menu
+   - ✅ Add "Open with Code" action to Windows Explorer directory context menu
+   - ✅ Register Code as an editor for supported file types
+   - ✅ Add to PATH
+4. Conclua a instalação
+
+---
+
+### PASSO 4: Instalar Extensões no VS Code
+
+Abra o Visual Studio Code e instale as seguintes extensões:
+
+1. **React Native Tools** (Microsoft)
+   - Suporte completo para React Native
+   - Debugging integrado
+
+2. **ESLint**
+   - Análise de código e detecção de erros
+
+3. **Prettier - Code formatter**
+   - Formatação automática de código
+
+4. **TypeScript and JavaScript Language Features**
+   - Intellisense para TypeScript/JavaScript
+
+**Como instalar extensões:**
+- Clique no ícone de extensões na barra lateral esquerda (Ctrl + Shift + X)
+- Busque pelo nome da extensão
+- Clique em "Install"
+
+---
+
+### PASSO 5: Clonar o Repositório
+
+1. **Crie uma pasta para o projeto** (exemplo):
+   ```
+   C:\Projetos\EstacioApp
+   ```
+   ou em qualquer local de sua preferência
+
+2. **Abra o Visual Studio Code**
+
+3. **Abra o Terminal Integrado:**
+   - Menu: `Terminal → New Terminal`
+   - Ou pressione: `Ctrl + '` (aspas simples)
+
+4. **Navegue até a pasta criada:**
+   ```bash
+   cd C:\Projetos\EstacioApp
+   ```
+   (Substitua pelo caminho da sua pasta)
+
+5. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/SevenKinifing007/ProjetoExtensaoAplicativoEstacio.git
+   ```
+
+6. **Entre na pasta do projeto:**
+   ```bash
+   cd ProjetoExtensaoAplicativoEstacio
+   ```
+
+7. **Abra a pasta no VS Code:**
+   ```bash
+   code .
+   ```
+
+---
+
+### PASSO 6: Instalar Dependências do Projeto
+
+No Terminal integrado do VS Code, execute:
 
 ```bash
 npm install
 ```
 
-Este comando irá baixar todas as bibliotecas necessárias listadas no arquivo `package.json`.
+Aguarde a instalação (pode demorar 2-5 minutos).
 
 ---
 
-## ▶️ Como Executar
+### PASSO 7: Executar o Aplicativo
 
-### Iniciar o Servidor de Desenvolvimento
+#### Opção A: Testar no Dispositivo Físico (Recomendado)
 
-```bash
-npm start
-```
+**No celular Android:**
 
-Este comando irá:
-1. Iniciar o Metro Bundler (servidor de desenvolvimento)
-2. Abrir uma interface no navegador com um QR Code
+1. Instale o **Expo Go** da Google Play Store:
+   - https://play.google.com/store/apps/details?id=host.exp.exponent
 
-### Opções de Execução
+**No VS Code:**
 
-#### 1. Executar no Emulador Android
+1. No Terminal integrado, execute:
+   ```bash
+   npm start
+   ```
 
-```bash
-npm run android
-```
+2. Aguarde o QR Code aparecer no terminal
 
-**Requisitos:**
+3. No celular, abra o **Expo Go**
+
+4. Toque em **"Scan QR code"**
+
+5. Aponte a câmera para o QR Code
+
+6. Aguarde o aplicativo carregar (pode demorar 1-3 minutos na primeira vez)
+
+**⚠️ Importante:** Celular e computador devem estar na **mesma rede Wi-Fi**
+
+---
+
+#### Opção B: Testar no Emulador Android
+
+**Pré-requisitos:**
 - Android Studio instalado
 - Emulador Android configurado
-- SDK do Android configurado
 
-#### 2. Executar no Dispositivo Físico (Recomendado para Iniciantes)
+**No VS Code:**
 
-1. Instale o **Expo Go** no seu celular Android
-2. Execute `npm start` no computador
-3. Abra o Expo Go no celular
-4. Escaneie o QR Code exibido no terminal ou navegador
+1. Inicie o emulador Android pelo Android Studio
 
-#### 3. Executar no Navegador Web
+2. No Terminal integrado do VS Code, execute:
+   ```bash
+   npm run android
+   ```
 
-```bash
-npm run web
-```
+3. O aplicativo será instalado e aberto automaticamente no emulador
 
-**Nota:** Algumas funcionalidades podem não funcionar perfeitamente na web.
+---
+
+### PASSO 8: Desenvolver com Hot Reload
+
+Com o aplicativo rodando (no celular ou emulador):
+
+1. **Abra qualquer arquivo** no VS Code (exemplo: `src/screens/HomeScreen.tsx`)
+
+2. **Faça uma alteração** (exemplo: mude o texto de um botão)
+
+3. **Salve o arquivo** (Ctrl + S)
+
+4. **O aplicativo atualiza automaticamente!** ✨ (Hot Reload)
 
 ---
 
@@ -257,10 +338,13 @@ ProjetoExtensaoAplicativoEstacio/
 
 | Arquivo | Descrição |
 |---------|-----------|
-| `App.tsx` | Ponto de entrada da aplicação (como Program.cs em C#) |
+| `App.tsx` | Ponto de entrada da aplicação |
 | `app.json` | Configurações do aplicativo (nome, ícone, permissões) |
 | `package.json` | Lista de dependências e scripts de execução |
 | `tsconfig.json` | Configurações do compilador TypeScript |
+| `src/screens/HomeScreen.tsx` | Tela principal com toda a lógica |
+| `src/services/pncpService.ts` | Funções para chamadas de API |
+| `src/types/pncp.ts` | Interfaces TypeScript (tipos de dados) |
 
 ---
 
@@ -284,7 +368,7 @@ https://pncp.gov.br/api/consulta/v1
 ### Exemplo de Requisição
 
 ```typescript
-// Buscar licitações do Ministério da Economia
+// Buscar licitações
 const cnpj = '00394460005887';
 const url = `https://pncp.gov.br/api/consulta/v1/orgaos/${cnpj}/licitacoes`;
 
@@ -300,109 +384,239 @@ fetch(url)
 
 ---
 
-## 📚 Guia para Iniciantes
+## 🔧 Desenvolvimento e Debug
 
-### Conceitos Básicos
+### Comandos Úteis no Terminal do VS Code
 
-#### 1. Componentes
+```bash
+# Iniciar servidor de desenvolvimento
+npm start
 
-Em React Native, tudo é um **componente**. Pense em componentes como blocos de construção reutilizáveis.
+# Executar no Android
+npm run android
 
-```typescript
-// Componente simples
-function MeuComponente() {
-  return <Text>Olá Mundo!</Text>;
-}
+# Executar no iOS (requer macOS)
+npm run ios
+
+# Executar no navegador web
+npm run web
+
+# Limpar cache
+npm start -- --clear
+
+# Verificar erros TypeScript
+npx tsc --noEmit
 ```
 
-#### 2. Props (Propriedades)
+---
 
-Props são como **parâmetros** que você passa para um componente.
+### Debug no VS Code
 
-```typescript
-// Similar a passar parâmetros para um método em C#
-function Saudacao({ nome }: { nome: string }) {
-  return <Text>Olá, {nome}!</Text>;
-}
+**Configurar Debug:**
 
-// Uso
-<Saudacao nome="João" />
-```
+1. Abra a aba **Run and Debug** (Ctrl + Shift + D)
 
-#### 3. State (Estado)
+2. Clique em **"create a launch.json file"**
 
-State é como uma **variável que causa re-renderização** quando muda.
+3. Escolha **"React Native"**
 
-```typescript
-const [contador, setContador] = useState(0);
+4. Configure os breakpoints nos arquivos `.tsx` ou `.ts`
 
-// Similar a:
-// private int contador = 0;
-// com notificação de mudança automática
-```
+5. Inicie o debug pressionando **F5**
 
-#### 4. Async/Await
+**Ver Logs:**
 
-Para operações assíncronas (como chamadas de API):
+- Console do VS Code mostra logs do Metro Bundler
+- Use `console.log()` para debug no código
+- Logs aparecem automaticamente no terminal
 
-```typescript
-async function buscarDados() {
-  const resposta = await fetch(url);
-  const dados = await resposta.json();
-  return dados;
-}
-```
+---
 
-### Comparação com C#
+### Hot Reload e Fast Refresh
 
-| React Native / TypeScript | C# / .NET |
-|---------------------------|-----------|
-| `interface` | `interface` |
-| `type` | `type alias` |
-| `const`, `let` | `var`, `const` |
-| `async/await` | `async/await` |
-| `=>` (arrow function) | `=>` (lambda) |
-| `useState` | `INotifyPropertyChanged` |
-| `.tsx` (JSX) | `.xaml` (XAML) |
+O aplicativo atualiza automaticamente quando você salva alterações:
+
+- **Hot Reload:** Recarrega componentes sem perder o estado
+- **Fast Refresh:** Preserva o estado do componente durante atualizações
+
+Para recarregar manualmente:
+- No Expo Go: Agite o celular e selecione "Reload"
+- No emulador: Pressione `R` duas vezes
 
 ---
 
 ## 📱 Build para Android
 
-### Build de Desenvolvimento
+### Build de Desenvolvimento (APK Local)
+
+**Pré-requisitos:**
+- Android Studio instalado
+- SDK do Android configurado
 
 ```bash
-# Build local (requer Android Studio)
-npm run android
+# Gerar APK local
+npx expo export:android
 ```
 
-### Build de Produção (APK)
+O APK será gerado na pasta `android/app/build/outputs/apk/`
+
+---
+
+### Build de Produção (APK com EAS)
+
+**1. Instalar EAS CLI:**
 
 ```bash
-# Instalar EAS CLI
 npm install -g eas-cli
+```
 
-# Login no Expo
+**2. Login no Expo:**
+
+```bash
 eas login
+```
 
-# Configurar build
+**3. Configurar build:**
+
+```bash
 eas build:configure
+```
 
-# Criar build APK
+**4. Criar build APK:**
+
+```bash
 eas build -p android --profile preview
 ```
 
 O APK será gerado e disponibilizado para download na plataforma Expo.
 
-### Publicar na Google Play Store
+**5. Build para produção (AAB para Play Store):**
 
 ```bash
-# Build para produção
 eas build -p android --profile production
+```
 
-# Submeter para a Play Store
+---
+
+### Publicar na Google Play Store
+
+**1. Criar conta de desenvolvedor:**
+- Acesse: https://play.google.com/console
+- Pague a taxa única de US$ 25
+- Complete o registro
+
+**2. Criar um novo aplicativo:**
+- No console, clique em "Criar app"
+- Preencha as informações necessárias
+- Configure a ficha da loja (descrição, capturas de tela, etc.)
+
+**3. Gerar build de produção:**
+
+```bash
+eas build -p android --profile production
+```
+
+**4. Fazer upload do AAB:**
+
+Opção A - Manualmente:
+- Baixe o arquivo `.aab` gerado pelo EAS
+- No console do Google Play, vá em "Produção"
+- Faça upload do arquivo `.aab`
+
+Opção B - Via EAS CLI:
+```bash
 eas submit -p android
 ```
+
+**5. Preencher requisitos:**
+- Classificação de conteúdo
+- Política de privacidade
+- Capturas de tela (pelo menos 2)
+- Ícone de alta resolução (512x512px)
+- Descrição completa
+
+**6. Enviar para revisão:**
+- Revise todas as informações
+- Clique em "Enviar para revisão"
+- Aguarde aprovação (pode levar de 3 a 7 dias)
+
+---
+
+## 🆚 Comparação: React Native vs Xamarin
+
+### React Native (Escolha Atual)
+
+**Tecnologia:** JavaScript/TypeScript + React
+
+**Vantagens:**
+- ✅ Grande comunidade e suporte
+- ✅ Hot Reload para desenvolvimento rápido
+- ✅ Performance próxima ao nativo
+- ✅ Expo simplifica desenvolvimento e deploy
+- ✅ Amplamente usado no mercado
+- ✅ Fácil integração com bibliotecas JavaScript
+- ✅ Documentação extensa
+
+**Desvantagens:**
+- ❌ Não usa C# (usa JavaScript/TypeScript)
+- ❌ Curva de aprendizado para quem vem de C#
+
+---
+
+### Xamarin / .NET MAUI (Alternativa C#)
+
+**Tecnologia:** C# + XAML
+
+**O que é:**
+- **Xamarin:** Framework anterior da Microsoft para desenvolvimento mobile
+- **Status:** Descontinuado em maio de 2024
+- **Substituto:** .NET MAUI (Multi-platform App UI)
+
+**Vantagens:**
+- ✅ Usa C# puro (familiar para desenvolvedores .NET)
+- ✅ Usa Visual Studio (não VS Code)
+- ✅ Compartilhamento de código com back-end .NET
+- ✅ Suporte oficial Microsoft
+- ✅ XAML para interfaces (similar a WPF)
+
+**Desvantagens:**
+- ❌ Comunidade menor que React Native
+- ❌ Menos bibliotecas de terceiros
+- ❌ Configuração mais complexa
+- ❌ Não tem equivalente ao Expo
+- ❌ Hot Reload limitado comparado ao React Native
+
+---
+
+### Comparação Técnica
+
+| Característica | React Native | Xamarin / .NET MAUI |
+|----------------|--------------|---------------------|
+| **Linguagem** | JavaScript/TypeScript | C# |
+| **IDE Principal** | VS Code | Visual Studio |
+| **Hot Reload** | ✅ Excelente | ⚠️ Limitado |
+| **Comunidade** | 🔥 Muito grande | ⚠️ Média |
+| **Curva de Aprendizado** | Média | Baixa (se souber C#) |
+| **Performance** | ⚡ Próxima ao nativo | ⚡ Nativa |
+| **Tamanho do App** | ~20-30 MB | ~15-20 MB |
+| **Deploy** | Expo facilita | Manual |
+| **Bibliotecas** | 🔥 Milhares | ⚠️ Menos opções |
+| **Custo** | ✅ Gratuito | ✅ Gratuito |
+| **Suporte iOS** | ✅ Sim | ✅ Sim |
+
+---
+
+### Por que escolhemos React Native?
+
+Para este projeto acadêmico, React Native foi escolhido por:
+
+1. **Mercado de trabalho:** Mais vagas e demanda
+2. **Facilidade de desenvolvimento:** Expo simplifica muito
+3. **Comunidade:** Mais recursos e tutoriais disponíveis
+4. **Performance:** Excelente para este tipo de aplicação
+5. **Hot Reload:** Acelera muito o desenvolvimento
+
+**Nota:** Se você tem experiência com C# e prefere usar Visual Studio, .NET MAUI é uma excelente alternativa. O código precisaria ser totalmente reescrito, mas a lógica de negócio seria similar.
 
 ---
 
@@ -415,33 +629,6 @@ Contribuições são bem-vindas! Para contribuir:
 3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
 4. Push para a branch (`git push origin feature/NovaFuncionalidade`)
 5. Abra um Pull Request
-
----
-
-## 📝 Comandos Úteis
-
-```bash
-# Iniciar servidor de desenvolvimento
-npm start
-
-# Executar no Android
-npm run android
-
-# Executar no iOS (requer macOS)
-npm run ios
-
-# Executar no navegador
-npm run web
-
-# Limpar cache
-npm start -- --clear
-
-# Instalar nova dependência
-npm install nome-da-biblioteca
-
-# Verificar erros TypeScript
-npx tsc --noEmit
-```
 
 ---
 
@@ -474,6 +661,20 @@ npm start -- --port 8082
 - Verifique se a API do PNCP está disponível
 - Tente acessar https://pncp.gov.br/api/consulta/v1/orgaos no navegador
 
+### Celular não conecta ao Expo Go
+
+- Verifique se celular e PC estão na mesma rede Wi-Fi
+- Tente usar "Tunnel" mode no Expo
+- Desative temporariamente o firewall
+
+---
+
+## 📅 Histórico de Versões
+
+| Versão | Data | Descrição |
+|--------|------|-----------|
+| 1.0.0 | Janeiro 2025 | Versão inicial do projeto |
+
 ---
 
 ## 📄 Licença
@@ -504,7 +705,7 @@ Desenvolvido por estudantes do curso de Dispositivos Móveis
 Para dúvidas ou suporte:
 
 - **GitHub Issues**: [Abrir Issue](https://github.com/SevenKinifing007/ProjetoExtensaoAplicativoEstacio/issues)
-- **Email**: [Seu email acadêmico]
+- **Documentação Completa**: [TUTORIAL-COMPLETO.md](./TUTORIAL-COMPLETO.md)
 
 ---
 
@@ -515,34 +716,10 @@ Para dúvidas ou suporte:
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Portal PNCP](https://pncp.gov.br/)
 - [API PNCP - Swagger](https://pncp.gov.br/api/swagger-ui.html)
+- [.NET MAUI (alternativa C#)](https://dotnet.microsoft.com/apps/maui)
 
 ---
 
 **Desenvolvido com ❤️ para a Universidade Estácio**
 
----
-
-### 📅 Histórico de Versões
-
-| Versão | Data | Descrição |
-|--------|------|-----------|
-| 1.0.0 | 2024 | Versão inicial do projeto |
-
----
-
-## 🎓 Aprendizados
-
-Este projeto proporciona aprendizado em:
-
-- ✅ Desenvolvimento mobile com React Native
-- ✅ Consumo de APIs REST públicas
-- ✅ TypeScript e tipagem estática
-- ✅ Componentização e reutilização de código
-- ✅ Gerenciamento de estado em React
-- ✅ Async/Await e Promises
-- ✅ Estilização com StyleSheet
-- ✅ Publicação de aplicativos móveis
-
----
-
-**Última atualização:** Novembro 2024
+**Última atualização:** Janeiro 2025

@@ -269,44 +269,29 @@ Agora vamos baixar o código do aplicativo para o seu computador.
 
 ### Como fazer:
 
-1. **Abra o "Explorador de Arquivos"**
+1. **Escolha um local para o projeto** (exemplos):
+   - `C:\Projetos\EstacioApp`
+   - `C:\Users\SeuNome\Documents\Projetos\EstacioApp`
+   - Ou qualquer outra pasta de sua preferência
+
+2. **Abra o "Explorador de Arquivos"**
    - Pressione as teclas **Windows + E** juntas
    - Ou clique no ícone da pasta amarela na barra de tarefas
 
-2. **Navegue até:**
-   ```
-   C:\Users\CENTI\Desktop
-   ```
-   - Clique em "Este Computador" (ou "This PC")
-   - Clique em "Disco Local (C:)"
-   - Clique em "Users" (ou "Usuários")
-   - Clique em "CENTI" (seu nome de usuário)
-   - Clique em "Desktop" (ou "Área de Trabalho")
+3. **Navegue até o local escolhido** (exemplo: Desktop, Documents, etc.)
 
-3. **Criar a primeira pasta:**
+4. **Criar a pasta do projeto:**
    - Clique com o botão direito em um espaço vazio
    - Escolha **"Novo" → "Pasta"**
-   - Digite o nome: `Projeto ESTACIO - Disposito Moveis`
+   - Digite um nome para a pasta (exemplo: `EstacioApp`)
    - Pressione **Enter**
 
-4. **Entrar na pasta que criou:**
-   - Dê **duplo clique** na pasta `Projeto ESTACIO - Disposito Moveis`
-
-5. **Criar a segunda pasta:**
-   - Clique com o botão direito em um espaço vazio
-   - Escolha **"Novo" → "Pasta"**
-   - Digite o nome: `Repositorio`
-   - Pressione **Enter**
-
-6. **Entrar na pasta "Repositorio":**
-   - Dê **duplo clique** na pasta `Repositorio`
-
-**Agora você está dentro de:**
-```
-C:\Users\CENTI\Desktop\Projeto ESTACIO - Disposito Moveis\Repositorio
-```
+5. **Entrar na pasta que criou:**
+   - Dê **duplo clique** na pasta que você acabou de criar
 
 **✅ Pasta criada com sucesso!**
+
+**Anote o caminho da sua pasta, você vai precisar!** (exemplo: `C:\Projetos\EstacioApp`)
 
 ---
 
@@ -316,11 +301,11 @@ C:\Users\CENTI\Desktop\Projeto ESTACIO - Disposito Moveis\Repositorio
 
 ### Como fazer:
 
-1. **Você ainda está na pasta "Repositorio", certo?**
+1. **Você ainda está na pasta que criou, certo?**
    - Se não, volte lá (seguindo o passo anterior)
 
 2. **Olhe para a barra de endereço no topo da janela**
-   - Lá está escrito algo como: `C:\Users\CENTI\Desktop\Projeto ESTACIO - Disposito Moveis\Repositorio`
+   - Lá está escrito o caminho da sua pasta (exemplo: `C:\Projetos\EstacioApp`)
 
 3. **Clique UMA VEZ na barra de endereço**
    - O texto vai ficar azul (selecionado)
@@ -337,10 +322,11 @@ C:\Users\CENTI\Desktop\Projeto ESTACIO - Disposito Moveis\Repositorio
    ```
    Windows PowerShell
    ```
-   - E a linha deve mostrar:
+   - E a linha deve mostrar o caminho da sua pasta:
    ```
-   PS C:\Users\CENTI\Desktop\Projeto ESTACIO - Disposito Moveis\Repositorio>
+   PS C:\Projetos\EstacioApp>
    ```
+   (O caminho será o da SUA pasta)
 
 **✅ Se abriu a janela azul, DEU CERTO!**
 
@@ -894,6 +880,6 @@ code .
 
 ---
 
-**Última atualização:** Novembro 2024
+**Última atualização:** Janeiro 2025
 
 **Criado para:** Projeto de Extensão - Universidade Estácio
