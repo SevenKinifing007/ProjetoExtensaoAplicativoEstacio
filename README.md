@@ -7,6 +7,31 @@ Aplicativo mobile desenvolvido para consulta de dados de **Licitações**, **Dis
 
 ---
 
+## 🚀 COMEÇANDO AGORA?
+
+**Se você é iniciante e nunca programou, comece por aqui:**
+
+### 📖 Guias Disponíveis:
+
+1. **[TUTORIAL COMPLETO](./TUTORIAL-COMPLETO.md)** 👈 **COMECE AQUI!**
+   - Guia ultra detalhado do zero ao aplicativo rodando
+   - Para quem nunca programou antes
+   - Passo a passo com explicações simples
+   - Tempo estimado: 30-45 minutos
+
+2. **[GUIA RÁPIDO](./GUIA-RAPIDO.md)** 👈 **Para Consulta Rápida**
+   - Checklist e referência rápida
+   - Comandos importantes
+   - Solução de problemas
+   - Imprima e tenha sempre à mão!
+
+3. **[README Completo](./README.md)** 👈 **Documentação Técnica**
+   - Você está aqui!
+   - Informações técnicas detalhadas
+   - Para consulta avançada
+
+---
+
 ## 📋 Índice
 
 - [Sobre o Projeto](#-sobre-o-projeto)
