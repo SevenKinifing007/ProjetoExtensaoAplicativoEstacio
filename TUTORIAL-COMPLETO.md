@@ -51,14 +51,14 @@ Vamos instalar 3 programas importantes.
    ```
 
 3. **Você vai ver uma página com 2 botões verdes**
-   - Um escrito algo como "20.x.x LTS" (recomendado)
-   - Outro escrito "21.x.x Current"
+   - Um escrito algo como "24.x.x LTS" (recomendado)
+   - Outro escrito "25.x.x Current"
 
 4. **Clique no botão "LTS" (o primeiro)**
    - LTS significa "versão estável e recomendada"
 
 5. **O arquivo vai baixar** (geralmente vai para a pasta "Downloads")
-   - O arquivo tem um nome como: `node-v20.11.0-x64.msi`
+   - O arquivo tem um nome como: `node-v24.11.0-x64.msi`
 
 6. **Quando terminar de baixar:**
    - Vá até a pasta "Downloads"
