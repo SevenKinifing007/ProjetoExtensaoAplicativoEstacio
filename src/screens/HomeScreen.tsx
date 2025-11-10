@@ -25,10 +25,11 @@ import {
   buscarLicitacoes,
   buscarContratos,
   buscarDispensas,
-  formatarValor,
-  formatarData,
-} from '../services/pncpService';
-import type { Licitacao, Contrato, Dispensa } from '../types/pncp';
+} from '../api/pncpService';
+import type { Licitacao, Contrato, Dispensa } from '../models/pncp';
+
+// Importar funções utilitárias
+import { formatarValor, formatarData } from '../utils/formatters';
 
 /**
  * Componente principal da tela

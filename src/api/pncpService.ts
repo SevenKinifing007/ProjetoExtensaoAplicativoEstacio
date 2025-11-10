@@ -5,8 +5,8 @@
  * Aqui fazemos as chamadas HTTP para a API do PNCP
  */
 
-import { PNCP_BASE_URL, API_ENDPOINTS, CNPJ_EXEMPLO } from '../constants/api';
-import type { Licitacao, Contrato, Dispensa, Orgao } from '../types/pncp';
+import { PNCP_BASE_URL, API_ENDPOINTS, CNPJ_EXEMPLO } from '../config/api';
+import type { Licitacao, Contrato, Dispensa, Orgao } from '../models/pncp';
 
 /**
  * Função auxiliar para fazer requisições HTTP
@@ -122,34 +122,3 @@ export async function buscarOrgaos(): Promise<Orgao[]> {
   }
 }
 
-/**
- * Formata valor em Real brasileiro
- *
- * @param valor - Valor numérico
- * @returns String formatada (ex: R$ 1.000,00)
- */
-export function formatarValor(valor?: number): string {
-  if (!valor) return 'R$ 0,00';
-
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(valor);
-}
-
-/**
- * Formata data brasileira
- *
- * @param data - String de data ISO
- * @returns String formatada (ex: 01/12/2024)
- */
-export function formatarData(data?: string): string {
-  if (!data) return '-';
-
-  try {
-    const date = new Date(data);
-    return date.toLocaleDateString('pt-BR');
-  } catch {
-    return data;
-  }
-}
