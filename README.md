@@ -493,11 +493,18 @@ O CMD não tem as restrições do PowerShell.
    ```
 
 6. **Abra a pasta no VS Code:**
+
+   **Opção A - Por comando (se `code` estiver no PATH):**
    ```bash
    code .
    ```
 
-   O VS Code abrirá novamente com a pasta do projeto carregada.
+   **Opção B - Manualmente (se comando não funcionar):**
+   - No VS Code: **File → Open Folder** (Arquivo → Abrir Pasta)
+   - Navegue até a pasta `ProjetoExtensaoAplicativoEstacio`
+   - Clique em **"Selecionar Pasta"**
+
+   O VS Code abrirá com a pasta do projeto carregada.
 
 #### Verificar:
 
@@ -512,6 +519,41 @@ O CMD não tem as restrições do PowerShell.
   ```
 
 #### ⚠️ Solução de Problemas:
+
+**Erro: "code não é reconhecido como comando" ou "CommandNotFoundException"**
+
+Este erro ocorre quando o VS Code não foi adicionado ao PATH do sistema.
+
+**Solução 1: Abrir pasta manualmente (Mais Rápido)**
+- No VS Code: **File → Open Folder**
+- Navegue até `ProjetoExtensaoAplicativoEstacio`
+- Clique em **"Selecionar Pasta"**
+
+**Solução 2: Reiniciar o terminal**
+- Feche completamente o VS Code
+- Abra novamente
+- Abra um novo terminal (`Ctrl + '`)
+- Tente: `code .`
+
+**Solução 3: Adicionar VS Code ao PATH (Windows)**
+1. Pressione `Win + Pause` → Configurações avançadas do sistema
+2. Clique em **"Variáveis de Ambiente"**
+3. Em "Variáveis do sistema", selecione **"Path"** → **"Editar"**
+4. Clique em **"Novo"** e adicione:
+   ```
+   C:\Users\SeuUsuario\AppData\Local\Programs\Microsoft VS Code\bin
+   ```
+   (Substitua `SeuUsuario` pelo seu nome de usuário)
+5. Clique em **"OK"** em todas as janelas
+6. Reinicie o computador
+
+**Solução 4: Reinstalar VS Code**
+- Desinstale o VS Code
+- Baixe de: https://code.visualstudio.com/
+- Durante instalação, marque: **"Add to PATH"**
+- Reinicie o computador
+
+---
 
 **Erro: "fatal: could not create work tree"**
 
