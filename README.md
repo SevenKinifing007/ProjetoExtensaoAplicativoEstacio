@@ -111,7 +111,7 @@ TypeScript é uma linguagem fortemente tipada, similar ao C#, que oferece:
 
 ## 🚀 Guia Completo de Instalação e Execução
 
-Este guia contém TODOS os passos necessários para instalar, configurar e executar o aplicativo, incluindo soluções para problemas comuns.
+Este guia contém todos os passos necessários para instalar, configurar e executar o aplicativo.
 
 ---
 
@@ -164,75 +164,6 @@ Este guia contém TODOS os passos necessários para instalar, configurar e execu
    ```
    **Resultado esperado:** `10.x.x` (ou superior)
 
-#### ⚠️ Solução de Problemas:
-
-**Erro: "O arquivo npm.ps1 não pode ser carregado" ou "não está assinado digitalmente"**
-
-Este é um erro comum de **Política de Execução do PowerShell** no Windows.
-
-**Solução 1: Alterar Política de Execução (Recomendado)**
-
-1. **Feche o PowerShell atual**
-
-2. **Abra o PowerShell como Administrador:**
-   - Pressione `Win + X`
-   - Escolha **"Windows PowerShell (Admin)"** ou **"Terminal (Admin)"**
-   - Clique em **"Sim"** na janela de permissão
-
-3. **Execute este comando:**
-   ```powershell
-   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-   ```
-
-4. **Quando perguntar, digite `S` e pressione Enter**
-
-5. **Feche o PowerShell Admin e abra um PowerShell normal**
-
-6. **Teste novamente:**
-   ```powershell
-   npm --version
-   ```
-
-**Solução 2: Usar o Prompt de Comando (CMD)**
-
-Se preferir não alterar a política do PowerShell:
-
-1. Pressione `Win + R`
-2. Digite: `cmd`
-3. Pressione Enter
-4. Execute: `npm --version`
-
-O CMD não tem as restrições do PowerShell.
-
-**Solução 3: PowerShell com Bypass (Temporário)**
-
-1. Pressione `Win + R`
-2. Digite: `powershell -ExecutionPolicy Bypass`
-3. Pressione Enter
-4. Execute: `npm --version`
-
----
-
-**Erro: "node não é reconhecido como comando"**
-
-**Solução 1:** Reiniciar o PowerShell/Terminal
-- Feche a janela e abra novamente
-- Tente executar `node --version` novamente
-
-**Solução 2:** Reiniciar o computador
-- Reinicie completamente o computador
-- Abra o PowerShell/Terminal novamente
-- Tente executar `node --version`
-
-**Solução 3:** Adicionar ao PATH manualmente (Windows)
-1. Pressione `Win + Pause` para abrir Propriedades do Sistema
-2. Clique em **"Configurações avançadas do sistema"**
-3. Clique em **"Variáveis de Ambiente"**
-4. Em "Variáveis do sistema", selecione **"Path"** e clique em **"Editar"**
-5. Clique em **"Novo"** e adicione: `C:\Program Files\nodejs\`
-6. Clique em **"OK"** em todas as janelas
-7. Reinicie o PowerShell
-
 ---
 
 ### PASSO 2: Instalar Git
@@ -274,24 +205,6 @@ O CMD não tem as restrições do PowerShell.
    ```
    **Resultado esperado:** `git version 2.x.x`
 
-#### ⚠️ Solução de Problemas:
-
-**Erro: "git não é reconhecido como comando"**
-
-**Solução 1:** Reiniciar o PowerShell/Terminal
-- Feche a janela e abra novamente
-- Tente executar `git --version` novamente
-
-**Solução 2:** Reiniciar o computador
-- Reinicie completamente o computador
-- Abra o PowerShell/Terminal novamente
-- Tente executar `git --version`
-
-**Solução 3:** Reinstalar o Git
-- Desinstale o Git pelo Painel de Controle
-- Baixe novamente de https://git-scm.com/
-- Reinstale marcando a opção **"Add Git to PATH"**
-
 ---
 
 ### PASSO 3: Instalar Visual Studio Code
@@ -327,23 +240,6 @@ O CMD não tem as restrições do PowerShell.
 7. Clique em **"Finish"** para concluir
 
 8. O VS Code será aberto automaticamente
-
-#### Verificar Instalação:
-
-- Se o Visual Studio Code abriu, a instalação foi bem-sucedida! ✅
-
-#### ⚠️ Solução de Problemas:
-
-**VS Code não abre:**
-
-**Solução 1:** Abrir manualmente
-- Windows: Pressione `Win`, digite `Visual Studio Code` e pressione Enter
-- Mac: Abra o Spotlight (`Cmd + Espaço`), digite `Visual Studio Code` e pressione Enter
-
-**Solução 2:** Reinstalar
-- Desinstale pelo Painel de Controle (Windows) ou pasta Aplicativos (Mac)
-- Baixe novamente de https://code.visualstudio.com/
-- Reinstale seguindo os passos acima
 
 ---
 
@@ -412,33 +308,6 @@ O CMD não tem as restrições do PowerShell.
    code --install-extension ms-vscode.vscode-typescript-next
    ```
 
-#### Verificar Instalação:
-
-1. No VS Code, clique no ícone de **Extensões** (`Ctrl + Shift + X`)
-
-2. No topo da barra lateral, você verá uma lista das extensões instaladas
-
-3. Verifique se todas as 4 extensões aparecem na lista
-
-#### ⚠️ Solução de Problemas:
-
-**Extensão não instala:**
-
-**Solução 1:** Verificar conexão com internet
-- Certifique-se de estar conectado à internet
-- Tente recarregar a lista de extensões (ícone de reload no topo)
-
-**Solução 2:** Instalar manualmente
-- Acesse https://marketplace.visualstudio.com/vscode
-- Busque pela extensão
-- Clique em "Download Extension"
-- Arraste o arquivo `.vsix` para o VS Code
-
-**Solução 3:** Atualizar o VS Code
-- Menu: **Help → Check for Updates**
-- Instale a atualização disponível
-- Tente instalar as extensões novamente
-
 ---
 
 ### PASSO 5: Clonar o Repositório
@@ -493,99 +362,15 @@ O CMD não tem as restrições do PowerShell.
    ```
 
 6. **Abra a pasta no VS Code:**
-
-   **Opção A - Por comando (se `code` estiver no PATH):**
-   ```bash
-   code .
-   ```
-
-   **Opção B - Manualmente (se comando não funcionar):**
    - No VS Code: **File → Open Folder** (Arquivo → Abrir Pasta)
    - Navegue até a pasta `ProjetoExtensaoAplicativoEstacio`
    - Clique em **"Selecionar Pasta"**
-
-   O VS Code abrirá com a pasta do projeto carregada.
-
-#### Verificar:
-
-- Na barra lateral esquerda do VS Code, você deve ver a estrutura de pastas:
-  ```
-  ProjetoExtensaoAplicativoEstacio
-  ├── src
-  ├── assets
-  ├── App.tsx
-  ├── package.json
-  └── ...
-  ```
-
-#### ⚠️ Solução de Problemas:
-
-**Erro: "code não é reconhecido como comando" ou "CommandNotFoundException"**
-
-Este erro ocorre quando o VS Code não foi adicionado ao PATH do sistema.
-
-**Solução 1: Abrir pasta manualmente (Mais Rápido)**
-- No VS Code: **File → Open Folder**
-- Navegue até `ProjetoExtensaoAplicativoEstacio`
-- Clique em **"Selecionar Pasta"**
-
-**Solução 2: Reiniciar o terminal**
-- Feche completamente o VS Code
-- Abra novamente
-- Abra um novo terminal (`Ctrl + '`)
-- Tente: `code .`
-
-**Solução 3: Adicionar VS Code ao PATH (Windows)**
-1. Pressione `Win + Pause` → Configurações avançadas do sistema
-2. Clique em **"Variáveis de Ambiente"**
-3. Em "Variáveis do sistema", selecione **"Path"** → **"Editar"**
-4. Clique em **"Novo"** e adicione:
-   ```
-   C:\Users\SeuUsuario\AppData\Local\Programs\Microsoft VS Code\bin
-   ```
-   (Substitua `SeuUsuario` pelo seu nome de usuário)
-5. Clique em **"OK"** em todas as janelas
-6. Reinicie o computador
-
-**Solução 4: Reinstalar VS Code**
-- Desinstale o VS Code
-- Baixe de: https://code.visualstudio.com/
-- Durante instalação, marque: **"Add to PATH"**
-- Reinicie o computador
-
----
-
-**Erro: "fatal: could not create work tree"**
-
-**Solução:** Verificar permissões da pasta
-- Certifique-se de que você tem permissões de escrita na pasta
-- Tente criar a pasta em outro local (ex: Desktop)
-- Execute o PowerShell/Terminal como Administrador
-
-**Erro: "Repository not found"**
-
-**Solução:** Verificar URL
-- Verifique se copiou a URL corretamente:
-  ```
-  https://github.com/SevenKinifing007/ProjetoExtensaoAplicativoEstacio.git
-  ```
-- Certifique-se de estar conectado à internet
-
-**Erro: "cd: no such file or directory"**
-
-**Solução:** Criar a pasta primeiro
-- Crie a pasta manualmente pelo Explorador de Arquivos
-- Ou use o comando `mkdir`:
-  ```bash
-  mkdir C:\Projetos\EstacioApp
-  cd C:\Projetos\EstacioApp
-  ```
 
 ---
 
 ### PASSO 6: Instalar Dependências do Projeto
 
-**O que é:** Dependências são as bibliotecas e pacotes que o projeto precisa para funcionar. Similar ao NuGet Restore em projetos C#.
+**O que é:** Dependências são as bibliotecas e pacotes que o projeto precisa para funcionar.
 
 #### Instalação:
 
@@ -603,7 +388,6 @@ Este erro ocorre quando o VS Code não foi adicionado ao PATH do sistema.
    - Você verá várias mensagens passando na tela:
      ```
      npm WARN deprecated ...
-     npm WARN deprecated ...
      added 727 packages, and audited 728 packages in 3m
 
      60 packages are looking for funding
@@ -614,59 +398,7 @@ Este erro ocorre quando o VS Code não foi adicionado ao PATH do sistema.
 
 4. **Instalação concluída:**
    - Quando terminar, você verá a mensagem: `added XXX packages`
-   - E o prompt do terminal voltará: `PS C:\...\ProjetoExtensaoAplicativoEstacio>`
-
-#### Verificar:
-
-- Uma pasta chamada **`node_modules`** foi criada no projeto
-- Esta pasta contém todas as bibliotecas instaladas
-- Você pode ver no explorador de arquivos do VS Code (barra lateral esquerda)
-
-#### ⚠️ Solução de Problemas:
-
-**Erro: "npm ERR! code ENOTFOUND"**
-
-**Solução:** Problema de internet
-- Verifique sua conexão com a internet
-- Desative VPN se estiver usando
-- Tente novamente: `npm install`
-
-**Erro: "npm ERR! EACCES: permission denied"**
-
-**Solução:** Problema de permissão
-- Feche o VS Code
-- Abra o PowerShell/Terminal como Administrador:
-  - Windows: Clique com botão direito no PowerShell → "Executar como Administrador"
-- Navegue até a pasta do projeto
-- Execute `npm install` novamente
-
-**Erro: "npm ERR! Maximum call stack size exceeded"**
-
-**Solução:** Limpar cache do npm
-```bash
-npm cache clean --force
-npm install
-```
-
-**Instalação travou/muito lenta:**
-
-**Solução 1:** Usar mirror alternativo (apenas se muito lento)
-```bash
-npm config set registry https://registry.npmjs.org/
-npm install
-```
-
-**Solução 2:** Instalar com verbose para ver progresso
-```bash
-npm install --verbose
-```
-
-**Erro: "gyp ERR! build error"**
-
-**Solução:** Geralmente pode ignorar
-- Esses erros são sobre módulos nativos opcionais
-- Se a instalação concluiu com `added XXX packages`, está OK
-- O app vai funcionar normalmente
+   - E o prompt do terminal voltará
 
 ---
 
@@ -699,8 +431,6 @@ Agora vamos rodar o aplicativo! Existem duas formas principais:
 
 6. Aguarde a instalação
 
-7. **NÃO precisa abrir agora**, só instalar
-
 ##### Executar o Projeto:
 
 1. **No VS Code, no Terminal Integrado, execute:**
@@ -718,7 +448,7 @@ Agora vamos rodar o aplicativo! Existem duas formas principais:
      › Press w │ open web
      ```
 
-3. **Um QR Code aparecerá no terminal** (quadrado de caracteres)
+3. **Um QR Code aparecerá no terminal**
    - Também abrirá uma página no navegador com um QR Code maior
 
 4. **No celular:**
@@ -741,57 +471,6 @@ Agora vamos rodar o aplicativo! Existem duas formas principais:
      - CONSULTAR CONTRATOS
      - CONSULTAR DISPENSAS
 
-##### Testar:
-
-- Toque em qualquer botão
-- Aguarde o loading (carregando)
-- Os dados da API do PNCP aparecerão na tela
-
-##### ⚠️ Solução de Problemas - Opção A:
-
-**QR Code não aparece:**
-
-**Solução:**
-```bash
-# Pare o servidor (Ctrl + C)
-# Limpe o cache e inicie novamente
-npm start -- --clear
-```
-
-**Celular não conecta (Expo Go não abre o app):**
-
-**Solução 1:** Verificar rede Wi-Fi
-- Celular e computador DEVEM estar na mesma rede Wi-Fi
-- Não use dados móveis no celular
-- Desconecte e reconecte ambos ao Wi-Fi
-
-**Solução 2:** Usar modo Tunnel
-1. No navegador onde o QR Code apareceu
-2. Procure por **"Connection: lan"**
-3. Clique e mude para **"Connection: tunnel"**
-4. Aguarde gerar novo QR Code
-5. Escaneie o novo QR Code
-
-**Solução 3:** Desativar firewall temporariamente
-- Windows: Configurações → Windows Defender Firewall → Desativar
-- **Lembre de reativar depois!**
-
-**App carrega mas fica em tela branca:**
-
-**Solução:**
-- No celular, agite o dispositivo
-- Aparecerá um menu
-- Toque em **"Reload"**
-
-**Erro: "Network response timed out"**
-
-**Solução:**
-```bash
-# No terminal do VS Code, pare o servidor (Ctrl + C)
-# Execute com tunnel mode
-npx expo start --tunnel
-```
-
 ---
 
 #### OPÇÃO B: Executar no Emulador Android
@@ -800,7 +479,7 @@ npx expo start --tunnel
 - **Android Studio** instalado
 - **Emulador Android** configurado
 
-##### Instalar Android Studio (se não tiver):
+##### Instalar Android Studio:
 
 1. Acesse: **https://developer.android.com/studio**
 
@@ -810,7 +489,7 @@ npx expo start --tunnel
 
 4. Na primeira execução:
    - Escolha **"Standard Installation"**
-   - Aguarde o download do Android SDK (pode demorar bastante)
+   - Aguarde o download do Android SDK
 
 5. Configure um emulador:
    - Abra o **AVD Manager** (Android Virtual Device Manager)
@@ -838,52 +517,6 @@ npx expo start --tunnel
    - O app será instalado no emulador
    - O app abrirá automaticamente no emulador
    - Pode demorar **3-5 minutos na primeira vez**
-
-4. **Aguarde a tela do app aparecer no emulador**
-
-##### ⚠️ Solução de Problemas - Opção B:
-
-**Erro: "ANDROID_HOME is not set"**
-
-**Solução:** Configurar variáveis de ambiente
-
-**Windows:**
-1. Pressione `Win + Pause` → Configurações avançadas do sistema
-2. Clique em **"Variáveis de Ambiente"**
-3. Em "Variáveis do sistema", clique em **"Novo"**
-4. Nome da variável: `ANDROID_HOME`
-5. Valor: `C:\Users\SeuUsuario\AppData\Local\Android\Sdk`
-6. Clique em **"OK"**
-7. Reinicie o VS Code
-
-**Mac/Linux:**
-Adicione ao arquivo `~/.bashrc` ou `~/.zshrc`:
-```bash
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-```
-
-**Erro: "No devices/emulators found"**
-
-**Solução:**
-- Certifique-se de que o emulador está rodando
-- No terminal, execute: `adb devices`
-- Deve aparecer o emulador na lista
-- Se não aparecer, reinicie o emulador
-
-**Emulador muito lento:**
-
-**Solução 1:** Habilitar virtualização na BIOS
-- Reinicie o PC e entre na BIOS (geralmente F2 ou Del)
-- Procure por "Intel VT-x" ou "AMD-V"
-- Habilite e salve
-
-**Solução 2:** Usar Expo Go (Opção A)
-- É mais rápido e mais fácil
-- Use o celular físico com Expo Go
 
 ---
 
@@ -920,33 +553,6 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 **No Emulador:**
 - Pressione `R` duas vezes no terminal do VS Code
 - Ou pressione `Ctrl + M` no emulador e selecione "Reload"
-
-#### Ver Logs e Erros:
-
-- **No Terminal do VS Code:** Todos os logs aparecem automaticamente
-- **Erros de código:** Aparecem em vermelho na tela do app
-- **Use `console.log()`** para debug:
-  ```typescript
-  console.log('Teste:', minhaVariavel);
-  ```
-
-#### ⚠️ Solução de Problemas:
-
-**Hot Reload não funciona:**
-
-**Solução:**
-```bash
-# Pare o servidor (Ctrl + C)
-# Limpe o cache
-npm start -- --clear
-```
-
-**App não atualiza após salvar:**
-
-**Solução:**
-- Recarregue manualmente (agite o celular ou pressione R+R)
-- Verifique se salvou o arquivo (Ctrl + S)
-- Verifique se não há erros de sintaxe no código
 
 ---
 
@@ -1120,12 +726,6 @@ npx kill-port 8081
    - Passar linha por linha (F10)
    - Entrar em funções (F11)
 
-#### Ver Logs:
-
-- **Console do VS Code:** Todos os `console.log()` aparecem aqui
-- **Terminal Integrado:** Logs do Metro Bundler
-- **Expo Go:** Agite o celular → Dev Menu → Show Performance Monitor
-
 ### Hot Reload e Fast Refresh
 
 **Hot Reload:**
@@ -1152,16 +752,10 @@ npx kill-port 8081
 **Pré-requisitos:**
 - Android Studio instalado
 - SDK do Android configurado
-- Variável `ANDROID_HOME` configurada
-
-**Gerar APK:**
 
 ```bash
 # Gerar APK de desenvolvimento
 npx expo export:android
-
-# APK será gerado em:
-# android/app/build/outputs/apk/release/app-release.apk
 ```
 
 ---
@@ -1193,45 +787,16 @@ Se não tiver conta:
 eas build:configure
 ```
 
-Isso criará o arquivo `eas.json` com as configurações de build.
-
 #### 4. Criar Build APK (para testes):
 
 ```bash
 eas build -p android --profile preview
 ```
 
-- O build será feito nos servidores da Expo
-- Você receberá um link para baixar o APK
-- Pode demorar 10-20 minutos
-
 #### 5. Criar Build AAB (para Play Store):
 
 ```bash
 eas build -p android --profile production
-```
-
-- Gera arquivo `.aab` (Android App Bundle)
-- Formato exigido pela Google Play Store
-- Otimizado e menor que APK
-
-#### Arquivo eas.json (Configuração):
-
-```json
-{
-  "build": {
-    "preview": {
-      "android": {
-        "buildType": "apk"
-      }
-    },
-    "production": {
-      "android": {
-        "buildType": "app-bundle"
-      }
-    }
-  }
-}
 ```
 
 ---
@@ -1242,26 +807,19 @@ eas build -p android --profile production
 
 1. **Acesse:** https://play.google.com/console
 
-2. **Clique em "Começar" ou "Sign in"**
+2. **Faça login** com sua conta Google
 
-3. **Faça login** com sua conta Google
-
-4. **Pague a taxa de registro:**
+3. **Pague a taxa de registro:**
    - Taxa única de **US$ 25**
    - Pagamento via cartão de crédito
-   - Não há taxa anual
 
-5. **Preencha informações:**
+4. **Preencha informações:**
    - Nome do desenvolvedor
    - Endereço
    - Telefone
    - Email de contato
 
-6. **Aceite os termos:**
-   - Acordo de Distribuição do Desenvolvedor
-   - Políticas do Google Play
-
-7. **Aguarde confirmação** (geralmente instantâneo)
+5. **Aceite os termos e políticas**
 
 ### Passo 2: Criar um Novo Aplicativo
 
@@ -1273,247 +831,55 @@ eas build -p android --profile production
    - **Tipo de app:** Aplicativo
    - **Gratuito ou pago:** Gratuito
 
-3. **Declare que o app segue as políticas:**
-   - Marque todas as declarações obrigatórias
-
-4. **Clique em "Criar app"**
+3. **Clique em "Criar app"**
 
 ### Passo 3: Configurar a Ficha da Loja
 
-#### 3.1. Descrição do App
+1. **Descrição do App:**
+   - Nome: Consulta PNCP
+   - Descrição breve (80 caracteres)
+   - Descrição completa (até 4000 caracteres)
 
-1. **No menu lateral, vá em: "Configuração → Ficha da loja principal"**
+2. **Recursos Gráficos:**
+   - Ícone: 512 x 512 pixels (PNG)
+   - Capturas de tela: mínimo 2 imagens
+   - Banner promocional: 1024 x 500 pixels
 
-2. **Preencha:**
-   - **Nome do app:** Consulta PNCP
-   - **Descrição breve:** (80 caracteres)
-     ```
-     Consulte licitações, contratos e dispensas do Portal Nacional de Contratações Públicas
-     ```
+3. **Categorização:**
+   - Categoria: Negócios
+   - Tags: licitação, governo, transparência
 
-   - **Descrição completa:** (4000 caracteres)
-     ```
-     O Consulta PNCP é um aplicativo mobile que facilita o acesso a dados públicos
-     sobre contratações governamentais. Com ele, você pode:
+### Passo 4: Classificação de Conteúdo
 
-     • Consultar licitações de órgãos públicos
-     • Visualizar contratos vigentes
-     • Acompanhar dispensas de licitação
-     • Filtrar por órgão, valor e data
-     • Acessar informações detalhadas de cada processo
-
-     Todos os dados são obtidos em tempo real da API pública do Portal Nacional
-     de Contratações Públicas (PNCP), garantindo transparência e confiabilidade.
-
-     Características:
-     - Interface intuitiva e fácil de usar
-     - Dados atualizados em tempo real
-     - Sem necessidade de cadastro ou login
-     - Gratuito e sem anúncios
-
-     Ideal para:
-     - Jornalistas investigativos
-     - Auditores e fiscais
-     - Empresários interessados em licitações
-     - Estudantes de administração pública
-     - Cidadãos interessados em transparência pública
-     ```
-
-#### 3.2. Recursos Gráficos
-
-**Ícone do app:**
-- Tamanho: **512 x 512 pixels**
-- Formato: PNG (32 bits)
-- Use a imagem: `assets/icon.png` (redimensione se necessário)
-
-**Imagem de recurso:**
-- Tamanho: **1024 x 500 pixels**
-- Formato: PNG ou JPEG
-- Banner promocional do app
-
-**Capturas de tela (mínimo 2):**
-- **Telefone:** 16:9 ou 9:16
-- Tamanho mínimo: 320px
-- Tamanho máximo: 3840px
-- Formatos: PNG ou JPEG
-
-**Como tirar capturas de tela:**
-1. Execute o app no emulador ou Expo Go
-2. Use a função de screenshot do dispositivo
-3. No emulador: botão de câmera na barra lateral
-4. No celular: botão Power + Volume Down
-
-**Capturas recomendadas:**
-1. Tela inicial com os 3 botões
-2. Lista de licitações
-3. Lista de contratos
-4. Detalhes de uma licitação
-
-#### 3.3. Categorização
-
-- **Categoria:** Negócios
-- **Tags:** licitação, contratações públicas, governo, transparência
-
-#### 3.4. Detalhes de Contato
-
-- **Site:** (opcional, pode deixar em branco)
-- **Email:** seu-email@exemplo.com
-- **Telefone:** (opcional)
-- **Política de privacidade:** (obrigatório - ver abaixo)
-
-### Passo 4: Criar Política de Privacidade
-
-**Você PRECISA de uma URL de política de privacidade.**
-
-**Opção 1: Gerar automaticamente**
-- Acesse: https://www.privacypolicygenerator.info/
-- Preencha as informações sobre o app
-- Gere o HTML
-- Hospede no GitHub Pages (gratuito)
-
-**Opção 2: Template básico**
-
-```markdown
-# Política de Privacidade - Consulta PNCP
-
-**Última atualização: Janeiro 2025**
-
-## 1. Informações que coletamos
-
-O aplicativo Consulta PNCP NÃO coleta, armazena ou compartilha informações
-pessoais dos usuários.
-
-## 2. Dados de API
-
-Todos os dados exibidos são públicos e obtidos da API do Portal Nacional de
-Contratações Públicas (PNCP).
-
-## 3. Permissões
-
-O app requer apenas acesso à internet para consultar a API pública do PNCP.
-
-## 4. Cookies
-
-O app não utiliza cookies ou tecnologias de rastreamento.
-
-## 5. Contato
-
-Para dúvidas sobre esta política, entre em contato: seu-email@exemplo.com
-```
-
-Hospede este arquivo e use a URL na ficha da loja.
-
-### Passo 5: Classificação de Conteúdo
-
-1. **No menu lateral, vá em: "Configuração → Classificação de conteúdo"**
-
-2. **Clique em "Iniciar questionário"**
-
-3. **Responda as perguntas:**
+1. **Responda ao questionário:**
    - Violência: Não
    - Sexo: Não
    - Linguagem imprópria: Não
    - Drogas: Não
-   - etc.
 
-4. **Clique em "Enviar"**
+2. **Receberá classificação automática** (geralmente "Livre")
 
-5. **Receberá classificação automática:** (geralmente "Livre")
+### Passo 5: Fazer Upload do AAB
 
-### Passo 6: Fazer Upload do AAB
-
-1. **Gere o build de produção:**
+1. **Gere o build:**
    ```bash
    eas build -p android --profile production
    ```
 
-2. **Aguarde o build completar** (10-20 minutos)
-
-3. **Baixe o arquivo `.aab`** do link fornecido
-
-**Opção A - Upload Manual:**
-
-4. **No Google Play Console, vá em: "Produção → Lançamentos"**
-
-5. **Clique em "Criar novo lançamento"**
-
-6. **Faça upload do arquivo `.aab`**
-
-7. **Preencha:**
-   - **Nome do lançamento:** v1.0.0
-   - **Notas da versão:**
-     ```
-     Versão inicial:
-     - Consulta de licitações
-     - Consulta de contratos
-     - Consulta de dispensas
-     ```
-
-8. **Clique em "Salvar" e depois "Revisar lançamento"**
-
-**Opção B - Via EAS CLI:**
-
-```bash
-eas submit -p android
-```
-
-Isso fará upload automaticamente para o Google Play Console.
-
-### Passo 7: Revisar e Enviar
-
-1. **Verifique todos os itens:**
-   - ✅ Ficha da loja preenchida
-   - ✅ Capturas de tela adicionadas
-   - ✅ Ícone configurado
-   - ✅ Classificação de conteúdo
-   - ✅ Política de privacidade
-   - ✅ AAB enviado
-
-2. **Vá em: "Resumo do lançamento"**
-
-3. **Clique em "Enviar para revisão"**
-
-4. **Aguarde a análise:**
-   - Geralmente leva **3 a 7 dias**
-   - Você receberá email com atualizações
-   - O app pode ser aprovado ou precisar de ajustes
-
-### Passo 8: Após Aprovação
-
-Quando aprovado:
-- App ficará disponível na Play Store
-- Link será: `https://play.google.com/store/apps/details?id=com.estacio.consultapncp`
-- Você pode compartilhar o link
-- Usuários poderão instalar normalmente
-
-### Atualizações Futuras
-
-Para enviar atualizações:
-
-1. **Aumente a versão em `app.json`:**
-   ```json
-   {
-     "expo": {
-       "version": "1.0.1",
-       "android": {
-         "versionCode": 2
-       }
-     }
-   }
-   ```
-
-2. **Gere novo build:**
-   ```bash
-   eas build -p android --profile production
-   ```
+2. **Baixe o arquivo `.aab`**
 
 3. **No Play Console: "Produção → Criar novo lançamento"**
 
-4. **Faça upload do novo AAB**
+4. **Faça upload do arquivo `.aab`**
 
 5. **Preencha as notas da versão**
 
-6. **Envie para revisão**
+6. **Clique em "Enviar para revisão"**
+
+### Passo 6: Aguardar Aprovação
+
+- Geralmente leva **3 a 7 dias**
+- Você receberá email com atualizações
 
 ---
 
@@ -1523,35 +889,18 @@ Para enviar atualizações:
 
 **Tecnologia:** JavaScript/TypeScript + React
 
-**O que é:**
-- Framework desenvolvido pelo Facebook (Meta)
-- Permite criar apps nativos usando JavaScript/TypeScript
-- Usa componentes React para construir a interface
-- Compila para código nativo (Android e iOS)
-
 **Vantagens:**
-- ✅ **Grande comunidade:** Milhões de desenvolvedores
-- ✅ **Hot Reload:** Veja mudanças instantaneamente
-- ✅ **Performance:** Próxima ao nativo (usa componentes nativos)
-- ✅ **Expo:** Simplifica MUITO o desenvolvimento
-- ✅ **Mercado de trabalho:** Muitas vagas disponíveis
-- ✅ **Bibliotecas:** Milhares de bibliotecas disponíveis (npm)
-- ✅ **Documentação:** Extensa e bem organizada
-- ✅ **Cross-platform:** Um código para Android e iOS
-- ✅ **Custo:** Completamente gratuito
+- ✅ Grande comunidade e suporte
+- ✅ Hot Reload excelente
+- ✅ Performance próxima ao nativo
+- ✅ Expo simplifica desenvolvimento
+- ✅ Muitas vagas de emprego
+- ✅ Milhares de bibliotecas disponíveis
+- ✅ Cross-platform (Android e iOS)
 
 **Desvantagens:**
-- ❌ **Não usa C#:** Usa JavaScript/TypeScript
-- ❌ **Curva de aprendizado:** Para quem vem de C#
-- ❌ **Bridge:** Pequeno overhead de comunicação JS ↔ Nativo
-
-**Empresas que usam:**
-- Facebook
-- Instagram
-- Uber Eats
-- Discord
-- Shopify
-- Microsoft (algumas apps)
+- ❌ Não usa C# (usa JavaScript/TypeScript)
+- ❌ Curva de aprendizado para quem vem de C#
 
 ---
 
@@ -1560,194 +909,46 @@ Para enviar atualizações:
 **Tecnologia:** C# + XAML
 
 **O que é:**
-- **Xamarin:** Framework da Microsoft (descontinuado em maio 2024)
-- **Status atual:** Não recebe mais atualizações
+- **Xamarin:** Descontinuado em maio 2024
 - **Substituto:** .NET MAUI (Multi-platform App UI)
-- Permite criar apps usando C# puro
-- Usa XAML para interfaces (como WPF)
-
-**.NET MAUI (substituto do Xamarin):**
-- Lançado em maio 2022
-- Sucessor oficial do Xamarin
-- Parte do .NET 6+ (.NET 8 atual)
-- Mesma filosofia: C# para mobile
 
 **Vantagens:**
-- ✅ **Usa C# puro:** Familiar para desenvolvedores .NET
-- ✅ **Visual Studio:** Usa VS 2022 (não VS Code)
-- ✅ **Compartilhamento de código:** Backend e mobile em C#
-- ✅ **Suporte Microsoft:** Oficial e de longo prazo
-- ✅ **XAML:** Similar a WPF/UWP
-- ✅ **Performance:** Totalmente nativa
-- ✅ **Integração:** Boa integração com Azure
+- ✅ Usa C# puro
+- ✅ Usa Visual Studio 2022
+- ✅ Compartilhamento de código com backend .NET
+- ✅ Suporte oficial Microsoft
 
 **Desvantagens:**
-- ❌ **Comunidade menor:** Comparado ao React Native
-- ❌ **Menos bibliotecas:** Ecossistema menor
-- ❌ **Configuração complexa:** Mais difícil de configurar
-- ❌ **Sem Expo:** Não tem ferramenta equivalente
-- ❌ **Hot Reload limitado:** XAML Hot Reload existe, mas é limitado
-- ❌ **Mercado:** Menos vagas que React Native
-
-**Empresas que usam:**
-- Alaska Airlines
-- UPS
-- BBC
-- Olo
-- The World Bank
+- ❌ Comunidade menor
+- ❌ Menos bibliotecas disponíveis
+- ❌ Configuração mais complexa
+- ❌ Não tem equivalente ao Expo
+- ❌ Hot Reload limitado
 
 ---
 
-### Comparação Técnica Detalhada
+### Comparação Técnica
 
 | Característica | React Native | Xamarin / .NET MAUI |
 |----------------|--------------|---------------------|
 | **Linguagem** | JavaScript/TypeScript | C# |
-| **IDE Principal** | VS Code, WebStorm | Visual Studio 2022 |
-| **Status** | ✅ Ativo e crescendo | ⚠️ Xamarin descontinuado, MAUI é novo |
-| **Hot Reload** | ✅ Excelente (Fast Refresh) | ⚠️ XAML Hot Reload (limitado) |
-| **Comunidade** | 🔥 Muito grande (110k+ stars) | ⚠️ Média (20k+ stars MAUI) |
-| **Curva de Aprendizado** | Média (JS/TS + React) | Baixa (se souber C#) |
+| **IDE Principal** | VS Code | Visual Studio 2022 |
+| **Hot Reload** | ✅ Excelente | ⚠️ Limitado |
+| **Comunidade** | 🔥 Muito grande | ⚠️ Média |
 | **Performance** | ⚡ 95% nativa | ⚡ 100% nativa |
-| **Tamanho do App** | ~20-30 MB | ~15-20 MB |
-| **Deploy/Testes** | 🔥 Expo facilita MUITO | ⚠️ Manual, mais complexo |
-| **Bibliotecas** | 🔥 npm (milhões) | ⚠️ NuGet (menos opções mobile) |
-| **Custo** | ✅ Gratuito | ✅ Gratuito |
-| **Suporte iOS** | ✅ Sim (requer Mac) | ✅ Sim (requer Mac) |
-| **Web** | ⚠️ React Native Web | ✅ Blazor Hybrid |
-| **Desktop** | ❌ Não | ✅ Windows/Mac (MAUI) |
-| **Documentação** | ✅ Excelente | ✅ Boa (melhorando) |
+| **Deploy** | 🔥 Expo facilita | ⚠️ Manual |
+| **Bibliotecas** | 🔥 Milhões (npm) | ⚠️ Menos opções |
 | **Vagas de emprego** | 🔥 Muitas | ⚠️ Menos |
 
 ---
 
-### Exemplo de Código: Hello World
+### Por que escolhemos React Native?
 
-**React Native (TypeScript):**
-
-```tsx
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-
-export default function App() {
-  const [count, setCount] = React.useState(0);
-
-  return (
-    <View style={styles.container}>
-      <Text>Hello World!</Text>
-      <Text>Você clicou {count} vezes</Text>
-      <Button title="Clique aqui" onPress={() => setCount(count + 1)} />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-```
-
-**.NET MAUI (C#):**
-
-```csharp
-// MainPage.xaml.cs
-public partial class MainPage : ContentPage
-{
-    private int count = 0;
-
-    public MainPage()
-    {
-        InitializeComponent();
-    }
-
-    private void OnButtonClicked(object sender, EventArgs e)
-    {
-        count++;
-        CounterLabel.Text = $"Você clicou {count} vezes";
-    }
-}
-```
-
-```xml
-<!-- MainPage.xaml -->
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="HelloWorld.MainPage">
-    <VerticalStackLayout>
-        <Label Text="Hello World!" />
-        <Label x:Name="CounterLabel" Text="Você clicou 0 vezes" />
-        <Button Text="Clique aqui" Clicked="OnButtonClicked" />
-    </VerticalStackLayout>
-</ContentPage>
-```
-
----
-
-### Por que este projeto escolheu React Native?
-
-Para este projeto acadêmico, React Native foi escolhido pelos seguintes motivos:
-
-1. **Facilidade de desenvolvimento:**
-   - Expo simplifica MUITO (sem precisar Android Studio configurado)
-   - Hot Reload acelera o desenvolvimento
-   - Testes rápidos no celular físico com Expo Go
-
-2. **Mercado de trabalho:**
-   - Mais vagas disponíveis
-   - Habilidade mais valorizada
-   - Maior demanda por desenvolvedores React Native
-
-3. **Comunidade e recursos:**
-   - Mais tutoriais e exemplos
-   - Mais bibliotecas disponíveis
-   - Mais fácil encontrar soluções para problemas
-
-4. **Aprendizado:**
-   - TypeScript é similar ao C# (fácil transição)
-   - React é usado também em web (habilidade reutilizável)
-   - Conceitos modernos de desenvolvimento
-
-5. **Performance:**
-   - Excelente para aplicativos de consulta de dados
-   - Interface fluida e responsiva
-   - Adequado para o escopo do projeto
-
----
-
-### Quando escolher .NET MAUI?
-
-**.NET MAUI é melhor quando:**
-
-1. ✅ Você já domina C# e quer continuar usando
-2. ✅ Seu backend é .NET (compartilhar código e modelos)
-3. ✅ Precisa de app desktop além de mobile
-4. ✅ Quer usar Visual Studio (não VS Code)
-5. ✅ Seu time já é .NET (curva de aprendizado menor)
-6. ✅ Integração forte com Azure
-
-**.NET MAUI NÃO é ideal quando:**
-
-1. ❌ Precisa de prototipagem rápida (Expo é mais rápido)
-2. ❌ Equipe pequena (React Native tem mais recursos prontos)
-3. ❌ Primeiro projeto mobile (React Native tem mais tutoriais)
-4. ❌ Quer maior empregabilidade (React Native tem mais vagas)
-
----
-
-### Links Úteis
-
-**React Native:**
-- Site oficial: https://reactnative.dev/
-- Documentação: https://reactnative.dev/docs/getting-started
-- Expo: https://expo.dev/
-
-**.NET MAUI:**
-- Site oficial: https://dotnet.microsoft.com/apps/maui
-- Documentação: https://learn.microsoft.com/dotnet/maui/
-- GitHub: https://github.com/dotnet/maui
+1. **Facilidade de desenvolvimento:** Expo simplifica muito
+2. **Mercado de trabalho:** Mais vagas disponíveis
+3. **Comunidade:** Mais recursos e tutoriais
+4. **Aprendizado:** TypeScript similar ao C#
+5. **Performance:** Adequado para o projeto
 
 ---
 
@@ -1781,7 +982,6 @@ Desenvolvido por estudantes do curso de Dispositivos Móveis
 - Portal Nacional de Contratações Públicas (PNCP)
 - Comunidade React Native
 - Expo Team
-- Contribuidores do projeto
 
 ---
 
@@ -1790,7 +990,6 @@ Desenvolvido por estudantes do curso de Dispositivos Móveis
 Para dúvidas ou suporte:
 
 - **GitHub Issues:** [Abrir Issue](https://github.com/SevenKinifing007/ProjetoExtensaoAplicativoEstacio/issues)
-- **Email:** [Seu email acadêmico]
 
 ---
 
@@ -1800,17 +999,13 @@ Para dúvidas ou suporte:
 - [Documentação React Native](https://reactnative.dev/)
 - [Documentação Expo](https://docs.expo.dev/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [React Native Community](https://github.com/react-native-community)
 
 ### PNCP
 - [Portal PNCP](https://pncp.gov.br/)
 - [API PNCP - Swagger](https://pncp.gov.br/api/swagger-ui.html)
-- [Dados Abertos Governamentais](https://dados.gov.br/)
 
 ### Alternativas
 - [.NET MAUI (alternativa C#)](https://dotnet.microsoft.com/apps/maui)
-- [Flutter (alternativa Dart)](https://flutter.dev/)
-- [Ionic (alternativa web)](https://ionicframework.com/)
 
 ### Ferramentas
 - [Visual Studio Code](https://code.visualstudio.com/)
