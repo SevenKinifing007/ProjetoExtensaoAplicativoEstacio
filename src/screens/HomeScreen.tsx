@@ -104,17 +104,27 @@ export default function HomeScreen() {
    * Valida datas
    */
   function validarDatas(): boolean {
-    const di = parseDataInput(dataInicial);
     const df = parseDataInput(dataFinal);
 
-    if (!di || !df) {
-      Alert.alert('Erro', 'Datas inválidas. Use o formato DD/MM/AAAA');
+    // Data final sempre obrigatória
+    if (!df) {
+      Alert.alert('Erro', 'Data final inválida. Use o formato DD/MM/AAAA');
       return false;
     }
 
-    if (di > df) {
-      Alert.alert('Erro', 'Data inicial não pode ser maior que data final');
-      return false;
+    // Data inicial só obrigatória para "Por Publicação"
+    if (abaAtiva === 'publicacao') {
+      const di = parseDataInput(dataInicial);
+
+      if (!di) {
+        Alert.alert('Erro', 'Data inicial inválida. Use o formato DD/MM/AAAA');
+        return false;
+      }
+
+      if (di > df) {
+        Alert.alert('Erro', 'Data inicial não pode ser maior que data final');
+        return false;
+      }
     }
 
     return true;
@@ -131,8 +141,10 @@ export default function HomeScreen() {
     try {
       setLoading(true);
 
-      const di = parseDataInput(dataInicial)!;
       const df = parseDataInput(dataFinal)!;
+
+      // Data inicial só é usada em "Por Publicação"
+      const di = abaAtiva === 'publicacao' ? parseDataInput(dataInicial)! : df;
 
       const params: ParamsBuscaContratacoes = {
         dataInicial: di,
@@ -140,7 +152,7 @@ export default function HomeScreen() {
         codigoModalidade: modalidadeSelecionada,
         uf: estadoSelecionado || undefined,
         pagina,
-        tamanhoPagina: 100,
+        tamanhoPagina: 10,
       };
 
       const response = await buscarContratacoes(abaAtiva, params);
@@ -271,11 +283,14 @@ export default function HomeScreen() {
           options={opcoesModalidade}
         />
 
-        <DateInput
-          label="Data Inicial"
-          value={dataInicial}
-          onChangeText={setDataInicial}
-        />
+        {/* Data Inicial só aparece em "Por Publicação" */}
+        {abaAtiva === 'publicacao' && (
+          <DateInput
+            label="Data Inicial"
+            value={dataInicial}
+            onChangeText={setDataInicial}
+          />
+        )}
 
         <DateInput
           label="Data Final"

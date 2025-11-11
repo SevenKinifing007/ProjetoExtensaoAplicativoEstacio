@@ -92,16 +92,22 @@ export async function buscarContratacoes(
   params: ParamsBuscaContratacoes
 ): Promise<ApiResponsePaginada<Contratacao>> {
   // Formata datas para o formato da API (AAAAMMDD)
-  const dataInicialStr = formatarDataApi(params.dataInicial);
   const dataFinalStr = formatarDataApi(params.dataFinal);
 
-  // Constrói query parameters
+  // Constrói query parameters base
   const queryParams = new URLSearchParams({
-    dataInicial: dataInicialStr,
     dataFinal: dataFinalStr,
     codigoModalidadeContratacao: String(params.codigoModalidade),
     pagina: String(params.pagina || 1),
+    tamanhoPagina: String(params.tamanhoPagina || 10), // Padrão: 10 registros
   });
+
+  // IMPORTANTE: Por Publicação usa dataInicial E dataFinal
+  // Por Proposta usa APENAS dataFinal
+  if (tipoBusca === 'publicacao') {
+    const dataInicialStr = formatarDataApi(params.dataInicial);
+    queryParams.append('dataInicial', dataInicialStr);
+  }
 
   // Adiciona UF (estado) se fornecido
   if (params.uf) {
@@ -113,11 +119,6 @@ export async function buscarContratacoes(
     queryParams.append('cnpj', params.cnpj);
   }
 
-  // Adiciona tamanho de página se fornecido
-  if (params.tamanhoPagina) {
-    queryParams.append('tamanhoPagina', String(params.tamanhoPagina));
-  }
-
   // Seleciona endpoint baseado no tipo de busca
   const baseEndpoint = tipoBusca === 'publicacao'
     ? API_ENDPOINTS.CONTRATACOES_PUBLICACAO
@@ -126,11 +127,6 @@ export async function buscarContratacoes(
   const endpoint = `${baseEndpoint}?${queryParams.toString()}`;
 
   const response = await fetchApi<ApiResponsePaginada<Contratacao>>(endpoint);
-
-  // Limita a 100 registros se vier mais
-  if (response.data && response.data.length > 100) {
-    response.data = response.data.slice(0, 100);
-  }
 
   return response;
 }
@@ -164,7 +160,7 @@ export async function buscarLicitacoes(
       codigoModalidade: MODALIDADES.PREGAO_ELETRONICO,
       cnpj,
       pagina: 1,
-      tamanhoPagina: 100,
+      tamanhoPagina: 10,
     });
 
     console.log(`Encontradas ${response.totalRegistros} licitações`);
@@ -227,7 +223,7 @@ export async function buscarDispensas(
       codigoModalidade: MODALIDADES.DISPENSA,
       cnpj,
       pagina: 1,
-      tamanhoPagina: 100,
+      tamanhoPagina: 10,
     });
 
     console.log(`Encontradas ${response.totalRegistros} dispensas`);
