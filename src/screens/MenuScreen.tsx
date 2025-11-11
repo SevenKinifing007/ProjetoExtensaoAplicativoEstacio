@@ -26,7 +26,7 @@ export default function MenuScreen({ onNavigate }: MenuScreenProps) {
       <View style={styles.content}>
         {/* Cabeçalho */}
         <View style={styles.header}>
-          <Text style={styles.title}>PNCP</Text>
+          <Text style={styles.title}>Click Fácil PNCP</Text>
           <Text style={styles.subtitle}>Consulta de dados de Licitações, Dispensas e Contratos junto ao PNCP</Text>
         </View>
 
