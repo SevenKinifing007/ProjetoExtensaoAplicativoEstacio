@@ -11,6 +11,24 @@ import { PNCP_BASE_URL, API_ENDPOINTS, MODALIDADES } from '../config/api';
 import type { Licitacao, Contrato, Dispensa, Orgao, ApiResponsePaginada, Contratacao } from '../models/pncp';
 
 /**
+ * Parâmetros para busca de contratações
+ */
+export interface ParamsBuscaContratacoes {
+  dataInicial: Date;
+  dataFinal: Date;
+  codigoModalidade: number;
+  uf?: string; // Sigla do estado (ex: 'SP', 'RJ')
+  cnpj?: string;
+  pagina?: number;
+  tamanhoPagina?: number;
+}
+
+/**
+ * Tipo de busca: por publicação ou por proposta
+ */
+export type TipoBusca = 'publicacao' | 'proposta';
+
+/**
  * Função auxiliar para fazer requisições HTTP
  * Similar ao HttpClient em C#
  */
@@ -44,7 +62,7 @@ async function fetchApi<T>(endpoint: string): Promise<T> {
  * @param date - Objeto Date
  * @returns String no formato AAAAMMDD
  */
-function formatarDataApi(date: Date): string {
+export function formatarDataApi(date: Date): string {
   const ano = date.getFullYear();
   const mes = String(date.getMonth() + 1).padStart(2, '0');
   const dia = String(date.getDate()).padStart(2, '0');
@@ -52,57 +70,78 @@ function formatarDataApi(date: Date): string {
 }
 
 /**
- * Busca contratações por data de publicação
- *
- * @param dataInicial - Data inicial (padrão: 30 dias atrás)
- * @param dataFinal - Data final (padrão: hoje)
- * @param codigoModalidade - Código da modalidade (padrão: todos os pregões)
- * @param cnpj - CNPJ do órgão (opcional)
- * @param pagina - Número da página (padrão: 1)
- * @returns Promise com resposta paginada de contratações
+ * Obtém o primeiro e último dia do mês atual
+ * @returns {dataInicial, dataFinal}
  */
-async function buscarContratacoesPorData(
-  dataInicial?: Date,
-  dataFinal?: Date,
-  codigoModalidade?: number,
-  cnpj?: string,
-  pagina: number = 1
-): Promise<ApiResponsePaginada<Contratacao>> {
-  // Define datas padrão: últimos 30 dias
-  const dataFim = dataFinal || new Date();
-  const dataInicio = dataInicial || new Date(dataFim.getTime() - 30 * 24 * 60 * 60 * 1000);
-
-  // Formata datas para o formato da API (AAAAMMDD)
-  const dataInicialStr = formatarDataApi(dataInicio);
-  const dataFinalStr = formatarDataApi(dataFim);
-
-  // Modalidade padrão: Pregão Eletrônico (mais comum)
-  const modalidade = codigoModalidade || MODALIDADES.PREGAO_ELETRONICO;
-
-  // Constrói query parameters
-  const params = new URLSearchParams({
-    dataInicial: dataInicialStr,
-    dataFinal: dataFinalStr,
-    codigoModalidadeContratacao: String(modalidade),
-    pagina: String(pagina),
-  });
-
-  // Adiciona CNPJ se fornecido
-  if (cnpj) {
-    params.append('cnpj', cnpj);
-  }
-
-  const endpoint = `${API_ENDPOINTS.CONTRATACOES_PUBLICACAO}?${params.toString()}`;
-
-  return await fetchApi<ApiResponsePaginada<Contratacao>>(endpoint);
+export function obterPrimeiroeUltimoDiaDoMes(): { dataInicial: Date; dataFinal: Date } {
+  const hoje = new Date();
+  const dataInicial = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+  const dataFinal = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+  return { dataInicial, dataFinal };
 }
 
 /**
- * Busca licitações (Pregões Eletrônicos e Presenciais)
+ * Busca contratações (genérica, funciona para publicação ou proposta)
+ *
+ * @param tipoBusca - 'publicacao' ou 'proposta'
+ * @param params - Parâmetros da busca
+ * @returns Promise com resposta paginada
+ */
+export async function buscarContratacoes(
+  tipoBusca: TipoBusca,
+  params: ParamsBuscaContratacoes
+): Promise<ApiResponsePaginada<Contratacao>> {
+  // Formata datas para o formato da API (AAAAMMDD)
+  const dataInicialStr = formatarDataApi(params.dataInicial);
+  const dataFinalStr = formatarDataApi(params.dataFinal);
+
+  // Constrói query parameters
+  const queryParams = new URLSearchParams({
+    dataInicial: dataInicialStr,
+    dataFinal: dataFinalStr,
+    codigoModalidadeContratacao: String(params.codigoModalidade),
+    pagina: String(params.pagina || 1),
+  });
+
+  // Adiciona UF (estado) se fornecido
+  if (params.uf) {
+    queryParams.append('uf', params.uf);
+  }
+
+  // Adiciona CNPJ se fornecido
+  if (params.cnpj) {
+    queryParams.append('cnpj', params.cnpj);
+  }
+
+  // Adiciona tamanho de página se fornecido
+  if (params.tamanhoPagina) {
+    queryParams.append('tamanhoPagina', String(params.tamanhoPagina));
+  }
+
+  // Seleciona endpoint baseado no tipo de busca
+  const baseEndpoint = tipoBusca === 'publicacao'
+    ? API_ENDPOINTS.CONTRATACOES_PUBLICACAO
+    : API_ENDPOINTS.CONTRATACOES_PROPOSTA;
+
+  const endpoint = `${baseEndpoint}?${queryParams.toString()}`;
+
+  const response = await fetchApi<ApiResponsePaginada<Contratacao>>(endpoint);
+
+  // Limita a 100 registros se vier mais
+  if (response.data && response.data.length > 100) {
+    response.data = response.data.slice(0, 100);
+  }
+
+  return response;
+}
+
+/**
+ * Busca licitações (Pregões Eletrônicos)
+ * Função simplificada para compatibilidade com código existente
  *
  * @param cnpj - CNPJ do órgão (opcional)
- * @param dataInicial - Data inicial (opcional, padrão: 30 dias atrás)
- * @param dataFinal - Data final (opcional, padrão: hoje)
+ * @param dataInicial - Data inicial (opcional, padrão: início do mês atual)
+ * @param dataFinal - Data final (opcional, padrão: fim do mês atual)
  * @returns Promise com array de licitações
  */
 export async function buscarLicitacoes(
@@ -113,13 +152,20 @@ export async function buscarLicitacoes(
   try {
     console.log('Buscando licitações...');
 
+    // Define datas padrão: mês atual
+    const datas = dataInicial && dataFinal
+      ? { dataInicial, dataFinal }
+      : obterPrimeiroeUltimoDiaDoMes();
+
     // Busca pregões eletrônicos (modalidade 6)
-    const response = await buscarContratacoesPorData(
-      dataInicial,
-      dataFinal,
-      MODALIDADES.PREGAO_ELETRONICO,
-      cnpj
-    );
+    const response = await buscarContratacoes('publicacao', {
+      dataInicial: datas.dataInicial,
+      dataFinal: datas.dataFinal,
+      codigoModalidade: MODALIDADES.PREGAO_ELETRONICO,
+      cnpj,
+      pagina: 1,
+      tamanhoPagina: 100,
+    });
 
     console.log(`Encontradas ${response.totalRegistros} licitações`);
 
@@ -154,10 +200,11 @@ export async function buscarContratos(cnpj?: string): Promise<Contrato[]> {
 
 /**
  * Busca dispensas de licitação
+ * Função simplificada para compatibilidade com código existente
  *
  * @param cnpj - CNPJ do órgão (opcional)
- * @param dataInicial - Data inicial (opcional, padrão: 30 dias atrás)
- * @param dataFinal - Data final (opcional, padrão: hoje)
+ * @param dataInicial - Data inicial (opcional, padrão: início do mês atual)
+ * @param dataFinal - Data final (opcional, padrão: fim do mês atual)
  * @returns Promise com array de dispensas
  */
 export async function buscarDispensas(
@@ -168,13 +215,20 @@ export async function buscarDispensas(
   try {
     console.log('Buscando dispensas...');
 
+    // Define datas padrão: mês atual
+    const datas = dataInicial && dataFinal
+      ? { dataInicial, dataFinal }
+      : obterPrimeiroeUltimoDiaDoMes();
+
     // Busca dispensas (modalidade 8)
-    const response = await buscarContratacoesPorData(
-      dataInicial,
-      dataFinal,
-      MODALIDADES.DISPENSA,
-      cnpj
-    );
+    const response = await buscarContratacoes('publicacao', {
+      dataInicial: datas.dataInicial,
+      dataFinal: datas.dataFinal,
+      codigoModalidade: MODALIDADES.DISPENSA,
+      cnpj,
+      pagina: 1,
+      tamanhoPagina: 100,
+    });
 
     console.log(`Encontradas ${response.totalRegistros} dispensas`);
 
