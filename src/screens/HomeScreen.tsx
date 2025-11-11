@@ -10,7 +10,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   SafeAreaView,
   Alert,
   FlatList,
@@ -23,10 +22,9 @@ import ItemCard from '../components/ItemCard';
 // Importar serviços e tipos
 import {
   buscarLicitacoes,
-  buscarContratos,
   buscarDispensas,
 } from '../api/pncpService';
-import type { Licitacao, Contrato, Dispensa } from '../models/pncp';
+import type { Licitacao, Dispensa } from '../models/pncp';
 
 // Importar funções utilitárias
 import { formatarValor, formatarData } from '../utils/formatters';
@@ -42,7 +40,6 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(false);
   const [tipoConsulta, setTipoConsulta] = useState<string>('');
   const [licitacoes, setLicitacoes] = useState<Licitacao[]>([]);
-  const [contratos, setContratos] = useState<Contrato[]>([]);
   const [dispensas, setDispensas] = useState<Dispensa[]>([]);
 
   /**
@@ -62,37 +59,10 @@ export default function HomeScreen() {
       }
 
       setLicitacoes(dados);
-      setContratos([]);
       setDispensas([]);
     } catch (error) {
       console.error('Erro ao buscar licitações:', error);
       Alert.alert('Erro', 'Não foi possível buscar as licitações. Verifique sua conexão.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /**
-   * Função para consultar contratos
-   */
-  const consultarContratos = async () => {
-    try {
-      setLoading(true);
-      setTipoConsulta('contratos');
-
-      console.log('Buscando contratos...');
-      const dados = await buscarContratos();
-
-      if (dados.length === 0) {
-        Alert.alert('Aviso', 'Nenhum contrato encontrado.');
-      }
-
-      setContratos(dados);
-      setLicitacoes([]);
-      setDispensas([]);
-    } catch (error) {
-      console.error('Erro ao buscar contratos:', error);
-      Alert.alert('Erro', 'Não foi possível buscar os contratos. Verifique sua conexão.');
     } finally {
       setLoading(false);
     }
@@ -115,7 +85,6 @@ export default function HomeScreen() {
 
       setDispensas(dados);
       setLicitacoes([]);
-      setContratos([]);
     } catch (error) {
       console.error('Erro ao buscar dispensas:', error);
       Alert.alert('Erro', 'Não foi possível buscar as dispensas. Verifique sua conexão.');
@@ -125,142 +94,122 @@ export default function HomeScreen() {
   };
 
   /**
-   * Renderiza a lista de resultados baseado no tipo de consulta
+   * Retorna os dados a serem exibidos baseado no tipo de consulta
    */
-  const renderResultados = () => {
-    if (tipoConsulta === 'licitacoes' && licitacoes.length > 0) {
+  const getDados = (): (Licitacao | Dispensa)[] => {
+    if (tipoConsulta === 'licitacoes') {
+      return licitacoes;
+    } else if (tipoConsulta === 'dispensas') {
+      return dispensas;
+    }
+    return [];
+  };
+
+  /**
+   * Renderiza um item da lista
+   */
+  const renderItem = ({ item, index }: { item: Licitacao | Dispensa; index: number }) => {
+    if (tipoConsulta === 'licitacoes') {
+      const licitacao = item as Licitacao;
       return (
-        <FlatList
-          data={licitacoes}
-          keyExtractor={(item, index) => `licitacao-${index}`}
-          renderItem={({ item }) => (
-            <ItemCard
-              titulo={`Licitação ${item.numeroCompra || 'N/A'}`}
-              itens={[
-                { label: 'Órgão', value: item.orgaoEntidade?.razaoSocial || 'N/A' },
-                { label: 'Objeto', value: item.objetoCompra || 'N/A' },
-                {
-                  label: 'Valor Estimado',
-                  value: formatarValor(item.valorTotalEstimado),
-                },
-                {
-                  label: 'Data Publicação',
-                  value: formatarData(item.dataPublicacaoPncp),
-                },
-                { label: 'Modalidade', value: item.modalidadeNome || 'N/A' },
-                { label: 'Situação', value: item.situacaoCompra || 'N/A' },
-              ]}
-            />
-          )}
+        <ItemCard
+          titulo={`Licitação ${licitacao.numeroCompra || 'N/A'}`}
+          itens={[
+            { label: 'Órgão', value: licitacao.orgaoEntidade?.razaoSocial || 'N/A' },
+            { label: 'Objeto', value: licitacao.objetoCompra || 'N/A' },
+            {
+              label: 'Valor Estimado',
+              value: formatarValor(licitacao.valorTotalEstimado),
+            },
+            {
+              label: 'Data Publicação',
+              value: formatarData(licitacao.dataPublicacaoPncp),
+            },
+            { label: 'Modalidade', value: licitacao.modalidadeNome || 'N/A' },
+            { label: 'Situação', value: licitacao.situacaoCompra || 'N/A' },
+          ]}
+        />
+      );
+    } else if (tipoConsulta === 'dispensas') {
+      const dispensa = item as Dispensa;
+      return (
+        <ItemCard
+          titulo={`Dispensa ${dispensa.numeroCompra || 'N/A'}`}
+          itens={[
+            { label: 'Órgão', value: dispensa.orgaoEntidade?.razaoSocial || 'N/A' },
+            { label: 'Objeto', value: dispensa.objetoCompra || 'N/A' },
+            {
+              label: 'Valor Estimado',
+              value: formatarValor(dispensa.valorTotalEstimado),
+            },
+            {
+              label: 'Data Publicação',
+              value: formatarData(dispensa.dataPublicacaoPncp),
+            },
+            {
+              label: 'Fundamentação Legal',
+              value: dispensa.fundamentacaoLegal?.descricao || 'N/A',
+            },
+            { label: 'Situação', value: dispensa.situacaoCompra || 'N/A' },
+          ]}
         />
       );
     }
-
-    if (tipoConsulta === 'contratos' && contratos.length > 0) {
-      return (
-        <FlatList
-          data={contratos}
-          keyExtractor={(item, index) => `contrato-${index}`}
-          renderItem={({ item }) => (
-            <ItemCard
-              titulo={`Contrato ${item.numeroContrato || 'N/A'}`}
-              itens={[
-                { label: 'Fornecedor', value: item.razaoSocialFornecedor || 'N/A' },
-                { label: 'Objeto', value: item.objeto || 'N/A' },
-                { label: 'Valor Inicial', value: formatarValor(item.valorInicial) },
-                {
-                  label: 'Data Assinatura',
-                  value: formatarData(item.dataAssinatura),
-                },
-                {
-                  label: 'Vigência',
-                  value: `${formatarData(item.dataVigenciaInicio)} até ${formatarData(
-                    item.dataVigenciaFim
-                  )}`,
-                },
-                { label: 'Situação', value: item.situacaoContrato || 'N/A' },
-              ]}
-            />
-          )}
-        />
-      );
-    }
-
-    if (tipoConsulta === 'dispensas' && dispensas.length > 0) {
-      return (
-        <FlatList
-          data={dispensas}
-          keyExtractor={(item, index) => `dispensa-${index}`}
-          renderItem={({ item }) => (
-            <ItemCard
-              titulo={`Dispensa ${item.numeroCompra || 'N/A'}`}
-              itens={[
-                { label: 'Órgão', value: item.orgaoEntidade?.razaoSocial || 'N/A' },
-                { label: 'Objeto', value: item.objetoCompra || 'N/A' },
-                {
-                  label: 'Valor Estimado',
-                  value: formatarValor(item.valorTotalEstimado),
-                },
-                {
-                  label: 'Data Publicação',
-                  value: formatarData(item.dataPublicacaoPncp),
-                },
-                {
-                  label: 'Fundamentação Legal',
-                  value: item.fundamentacaoLegal?.descricao || 'N/A',
-                },
-                { label: 'Situação', value: item.situacaoCompra || 'N/A' },
-              ]}
-            />
-          )}
-        />
-      );
-    }
-
     return null;
   };
 
   /**
+   * Renderiza o cabeçalho da lista (header + botões)
+   */
+  const renderHeader = () => (
+    <>
+      {/* Cabeçalho */}
+      <View style={styles.header}>
+        <Text style={styles.title}>Consulta PNCP</Text>
+        <Text style={styles.subtitle}>
+          Portal Nacional de Contratações Públicas
+        </Text>
+      </View>
+
+      {/* Botões de Consulta */}
+      <View style={styles.buttonsContainer}>
+        <ConsultaButton
+          titulo="Consultar Licitações"
+          onPress={consultarLicitacoes}
+          loading={loading && tipoConsulta === 'licitacoes'}
+          cor="#1E40AF"
+        />
+
+        <ConsultaButton
+          titulo="Consultar Dispensas"
+          onPress={consultarDispensas}
+          loading={loading && tipoConsulta === 'dispensas'}
+          cor="#DC2626"
+        />
+      </View>
+    </>
+  );
+
+  /**
    * Renderização da interface (JSX - similar a XAML em WPF)
+   * Usa FlatList única para evitar erro de VirtualizedList aninhado
    */
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Cabeçalho */}
-        <View style={styles.header}>
-          <Text style={styles.title}>Consulta PNCP</Text>
-          <Text style={styles.subtitle}>
-            Portal Nacional de Contratações Públicas
-          </Text>
-        </View>
-
-        {/* Botões de Consulta */}
-        <View style={styles.buttonsContainer}>
-          <ConsultaButton
-            titulo="Consultar Licitações"
-            onPress={consultarLicitacoes}
-            loading={loading && tipoConsulta === 'licitacoes'}
-            cor="#1E40AF"
-          />
-
-          <ConsultaButton
-            titulo="Consultar Contratos"
-            onPress={consultarContratos}
-            loading={loading && tipoConsulta === 'contratos'}
-            cor="#059669"
-          />
-
-          <ConsultaButton
-            titulo="Consultar Dispensas"
-            onPress={consultarDispensas}
-            loading={loading && tipoConsulta === 'dispensas'}
-            cor="#DC2626"
-          />
-        </View>
-
-        {/* Resultados */}
-        <View style={styles.resultsContainer}>{renderResultados()}</View>
-      </ScrollView>
+      <FlatList
+        data={getDados()}
+        keyExtractor={(item, index) => `${tipoConsulta}-${index}`}
+        renderItem={renderItem}
+        ListHeaderComponent={renderHeader}
+        contentContainerStyle={styles.listContent}
+        ListEmptyComponent={
+          tipoConsulta ? (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Nenhum resultado encontrado</Text>
+            </View>
+          ) : null
+        }
+      />
     </SafeAreaView>
   );
 }
@@ -273,8 +222,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F3F4F6',
   },
-  scrollContent: {
+  listContent: {
     flexGrow: 1,
+    paddingBottom: 24,
   },
   header: {
     backgroundColor: '#1E40AF',
@@ -296,10 +246,17 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     paddingHorizontal: 24,
     paddingTop: 24,
+    paddingBottom: 16,
   },
-  resultsContainer: {
+  emptyContainer: {
     flex: 1,
-    marginTop: 16,
-    paddingBottom: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 48,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#6B7280',
+    textAlign: 'center',
   },
 });
