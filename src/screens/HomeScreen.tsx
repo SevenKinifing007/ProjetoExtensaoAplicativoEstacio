@@ -263,7 +263,7 @@ export default function HomeScreen({ onBack }: HomeScreenProps = {}) {
           </TouchableOpacity>
         )}
         <View style={styles.headerContent}>
-          <Text style={styles.title}>Consulta PNCP</Text>
+          <Text style={styles.title}>Click Facil Consultas PNCP</Text>
           <Text style={styles.subtitle}>Consulta de dados de Licitações, Dispensas e Contratos junto ao PNCP</Text>
         </View>
       </View>
@@ -323,7 +323,7 @@ export default function HomeScreen({ onBack }: HomeScreenProps = {}) {
           titulo="Buscar"
           onPress={() => realizarBusca(1)}
           loading={loading}
-          cor="#1E40AF"
+          cor="#000000"
         />
 
         {/* Info de resultados */}
@@ -482,12 +482,14 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginTop: 12,
     padding: 12,
-    backgroundColor: '#FFE5E5', // Fundo vermelho claro
+    backgroundColor: '#F3F4F6', // Fundo cinza claro
     borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: '#E31937', // Borda vermelha
   },
   infoText: {
     fontSize: 14,
-    color: '#E31937', // Vermelho Flamengo
+    color: '#000000', // Preto
     textAlign: 'center',
     marginBottom: 4,
   },

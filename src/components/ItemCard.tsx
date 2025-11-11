@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     borderLeftWidth: 4,
-    borderLeftColor: '#1E40AF',
+    borderLeftColor: '#E31937', // Vermelho Flamengo
   },
   titulo: {
     fontSize: 16,

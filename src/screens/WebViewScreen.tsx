@@ -34,7 +34,7 @@ export default function WebViewScreen({ url, onBack }: WebViewScreenProps) {
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>← Voltar</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Consulta PNCP</Text>
+        <Text style={styles.headerTitle}>Click Facil Consultas PNCP</Text>
       </View>
 
       {/* WebView */}
