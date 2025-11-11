@@ -41,10 +41,14 @@ import { formatarValor, formatarData } from '../utils/formatters';
 // Importar constantes
 import { ESTADOS_BRASIL, MODALIDADES } from '../config/api';
 
+interface HomeScreenProps {
+  onBack?: () => void;
+}
+
 /**
  * Componente principal da tela
  */
-export default function HomeScreen() {
+export default function HomeScreen({ onBack }: HomeScreenProps = {}) {
   // ==================== ESTADOS ====================
 
   // Abas
@@ -243,8 +247,15 @@ export default function HomeScreen() {
     <View>
       {/* Cabeçalho */}
       <View style={styles.header}>
-        <Text style={styles.title}>Consulta PNCP</Text>
-        <Text style={styles.subtitle}>Portal Nacional de Contratações Públicas</Text>
+        {onBack && (
+          <TouchableOpacity style={styles.backButton} onPress={onBack}>
+            <Text style={styles.backButtonText}>← Voltar</Text>
+          </TouchableOpacity>
+        )}
+        <View style={styles.headerContent}>
+          <Text style={styles.title}>Consulta PNCP</Text>
+          <Text style={styles.subtitle}>Portal Nacional de Contratações Públicas</Text>
+        </View>
       </View>
 
       {/* Abas */}
@@ -396,9 +407,25 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#1E40AF',
-    paddingVertical: 32,
-    paddingHorizontal: 24,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+  },
+  backButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+  },
+  backButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  headerContent: {
     alignItems: 'center',
+    paddingVertical: 16,
   },
   title: {
     fontSize: 28,
