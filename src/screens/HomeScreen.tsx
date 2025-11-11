@@ -18,6 +18,8 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
+  StatusBar,
 } from 'react-native';
 
 // Importar componentes
@@ -407,7 +409,8 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#1E40AF',
-    paddingVertical: 16,
+    paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight || 0) + 16 : 16,
+    paddingBottom: 16,
     paddingHorizontal: 16,
   },
   backButton: {
