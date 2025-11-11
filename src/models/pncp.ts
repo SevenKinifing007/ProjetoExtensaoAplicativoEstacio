@@ -6,12 +6,71 @@
  * - type (TS) = type alias (C#)
  * - string, number, boolean são tipos primitivos
  * - ? indica propriedade opcional (como nullable em C#)
+ *
+ * Baseado na documentação oficial da API do PNCP
+ * Swagger: https://pncp.gov.br/api/consulta/swagger-ui/index.html
  */
 
 /**
- * Interface para Licitação
+ * Interface para Contratação (retornada pela API)
+ * Representa licitações, dispensas e outros tipos de contratação
  */
-export interface Licitacao {
+export interface Contratacao {
+  srp?: boolean;
+  orgaoEntidade?: {
+    cnpj?: string;
+    razaoSocial?: string;
+    poderId?: string;
+    esferaId?: string;
+  };
+  anoCompra?: number;
+  sequencialCompra?: number;
+  dataInclusao?: string;
+  dataPublicacaoPncp?: string;
+  dataAtualizacao?: string;
+  numeroCompra?: string;
+  unidadeOrgao?: {
+    ufNome?: string;
+    codigoUnidade?: string;
+    nomeUnidade?: string;
+    ufSigla?: string;
+    municipioNome?: string;
+    codigoIbge?: string;
+  };
+  amparoLegal?: {
+    descricao?: string;
+    nome?: string;
+    codigo?: number;
+  };
+  dataAberturaProposta?: string;
+  dataEncerramentoProposta?: string;
+  informacaoComplementar?: string;
+  processo?: string;
+  objetoCompra?: string;
+  linkSistemaOrigem?: string;
+  justificativaPresencial?: string;
+  valorTotalHomologado?: number;
+  numeroControlePNCP?: string;
+  modoDisputaId?: number;
+  dataAtualizacaoGlobal?: string;
+  modalidadeId?: number;
+  linkProcessoEletronico?: string;
+  valorTotalEstimado?: number;
+  modoDisputaNome?: string;
+  tipoInstrumentoConvocatorioCodigo?: number;
+  tipoInstrumentoConvocatorioNome?: string;
+  fontesOrcamentarias?: any[];
+  situacaoCompraId?: number;
+  situacaoCompraNome?: string;
+  usuarioNome?: string;
+  modalidadeNome?: string;
+  situacaoCompra?: string; // Alias para compatibilidade
+}
+
+/**
+ * Interface para Licitação (alias de Contratacao para compatibilidade)
+ */
+export interface Licitacao extends Contratacao {
   numeroCompra?: string;
   anoCompra?: number;
   sequencialCompra?: number;
@@ -61,27 +120,13 @@ export interface Contrato {
 }
 
 /**
- * Interface para Dispensa
+ * Interface para Dispensa (alias de Contratacao com modalidade 8)
  */
-export interface Dispensa {
-  numeroCompra?: string;
-  anoCompra?: number;
-  sequencialCompra?: number;
-  numeroControlePNCP?: string;
-  orgaoEntidade?: {
-    cnpj?: string;
-    razaoSocial?: string;
-    poderId?: string;
-    esferaId?: string;
-  };
-  dataPublicacaoPncp?: string;
-  objetoCompra?: string;
-  valorTotalEstimado?: number;
+export interface Dispensa extends Contratacao {
   fundamentacaoLegal?: {
     descricao?: string;
     numero?: string;
   };
-  situacaoCompra?: string;
 }
 
 /**
@@ -97,7 +142,21 @@ export interface Orgao {
 }
 
 /**
- * Tipo genérico para resposta da API
+ * Resposta paginada da API do PNCP
+ * Estrutura retornada pelos endpoints de consulta
+ */
+export interface ApiResponsePaginada<T> {
+  data: T[];
+  totalRegistros: number;
+  totalPaginas: number;
+  numeroPagina: number;
+  paginasRestantes: number;
+  empty: boolean;
+}
+
+/**
+ * Tipo genérico para resposta da API (mantido para compatibilidade)
+ * @deprecated Use ApiResponsePaginada
  */
 export interface ApiResponse<T> {
   data: T[];
