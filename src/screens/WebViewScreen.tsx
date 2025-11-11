@@ -34,7 +34,7 @@ export default function WebViewScreen({ url, onBack }: WebViewScreenProps) {
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>← Voltar</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>PNCP</Text>
+        <Text style={styles.headerTitle}>Consulta PNCP</Text>
       </View>
 
       {/* WebView */}
@@ -46,7 +46,7 @@ export default function WebViewScreen({ url, onBack }: WebViewScreenProps) {
         startInLoadingState={true}
         renderLoading={() => (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#1E40AF" />
+            <ActivityIndicator size="large" color="#E31937" />
             <Text style={styles.loadingText}>Carregando...</Text>
           </View>
         )}
@@ -55,7 +55,7 @@ export default function WebViewScreen({ url, onBack }: WebViewScreenProps) {
       {/* Indicador de carregamento sobreposto */}
       {loading && (
         <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color="#1E40AF" />
+          <ActivityIndicator size="large" color="#E31937" />
           <Text style={styles.loadingText}>Carregando página...</Text>
         </View>
       )}
@@ -69,14 +69,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6',
   },
   header: {
-    backgroundColor: '#1E40AF',
+    backgroundColor: '#000000', // Preto Flamengo
     paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight || 0) + 16 : 16,
     paddingBottom: 16,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#1E3A8A',
+    borderBottomColor: '#E31937', // Vermelho Flamengo
   },
   backButton: {
     paddingVertical: 8,

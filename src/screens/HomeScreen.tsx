@@ -78,6 +78,14 @@ export default function HomeScreen({ onBack }: HomeScreenProps = {}) {
     setDataFinal(formatarDateParaInput(df));
   }, []);
 
+  // Limpa resultados ao trocar de aba
+  React.useEffect(() => {
+    setResultados([]);
+    setPaginaAtual(1);
+    setTotalPaginas(0);
+    setTotalRegistros(0);
+  }, [abaAtiva]);
+
   // ==================== FUNÇÕES AUXILIARES ====================
 
   /**
@@ -256,7 +264,7 @@ export default function HomeScreen({ onBack }: HomeScreenProps = {}) {
         )}
         <View style={styles.headerContent}>
           <Text style={styles.title}>Consulta PNCP</Text>
-          <Text style={styles.subtitle}>Portal Nacional de Contratações Públicas</Text>
+          <Text style={styles.subtitle}>Consulta de dados de Licitações, Dispensas e Contratos junto ao PNCP</Text>
         </View>
       </View>
 
@@ -389,7 +397,7 @@ export default function HomeScreen({ onBack }: HomeScreenProps = {}) {
       />
       {loading && (
         <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color="#1E40AF" />
+          <ActivityIndicator size="large" color="#E31937" />
         </View>
       )}
     </SafeAreaView>
@@ -408,7 +416,7 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   header: {
-    backgroundColor: '#1E40AF',
+    backgroundColor: '#000000', // Preto Flamengo
     paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight || 0) + 16 : 16,
     paddingBottom: 16,
     paddingHorizontal: 16,
@@ -438,7 +446,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: '#E0E7FF',
+    color: '#CCCCCC',
     textAlign: 'center',
   },
   tabsContainer: {
@@ -455,7 +463,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   tabActive: {
-    borderBottomColor: '#1E40AF',
+    borderBottomColor: '#E31937', // Vermelho Flamengo
   },
   tabText: {
     fontSize: 16,
@@ -463,7 +471,7 @@ const styles = StyleSheet.create({
     color: '#6B7280',
   },
   tabTextActive: {
-    color: '#1E40AF',
+    color: '#E31937', // Vermelho Flamengo
   },
   filtersContainer: {
     backgroundColor: '#fff',
@@ -474,12 +482,12 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginTop: 12,
     padding: 12,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#FFE5E5', // Fundo vermelho claro
     borderRadius: 8,
   },
   infoText: {
     fontSize: 14,
-    color: '#1E40AF',
+    color: '#E31937', // Vermelho Flamengo
     textAlign: 'center',
     marginBottom: 4,
   },
@@ -506,7 +514,7 @@ const styles = StyleSheet.create({
   pageButton: {
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: '#1E40AF',
+    backgroundColor: '#E31937', // Vermelho Flamengo
     borderRadius: 8,
   },
   pageButtonDisabled: {
