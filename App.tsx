@@ -8,8 +8,9 @@
  * - WebViewScreen (links externos)
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { BackHandler } from 'react-native';
 import MenuScreen from './src/screens/MenuScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import WebViewScreen from './src/screens/WebViewScreen';
@@ -22,6 +23,28 @@ type Screen = 'menu' | 'consultas' | 'webview';
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('menu');
   const [webViewUrl, setWebViewUrl] = useState<string>('');
+
+  /**
+   * Gerencia o botão de voltar do Android
+   */
+  useEffect(() => {
+    const backAction = () => {
+      // Se não estiver no menu, volta para o menu
+      if (currentScreen !== 'menu') {
+        setCurrentScreen('menu');
+        return true; // Indica que o evento foi tratado
+      }
+      // Se estiver no menu, permite sair do app
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [currentScreen]);
 
   /**
    * Navega para uma tela específica
