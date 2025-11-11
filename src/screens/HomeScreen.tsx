@@ -1,8 +1,11 @@
 /**
- * Tela Principal do Aplicativo
+ * Tela Principal do Aplicativo - VERSÃO COMPLETA
  *
- * Esta é a tela principal onde o usuário verá os botões
- * e os resultados das consultas ao PNCP
+ * Interface com:
+ * - Abas (Por Publicação / Por Proposta)
+ * - Filtros (Estado, Datas, Modalidade, Tipo)
+ * - Paginação (100 registros por página)
+ * - Listagem de resultados
  */
 
 import React, { useState } from 'react';
@@ -13,210 +16,360 @@ import {
   SafeAreaView,
   Alert,
   FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
 // Importar componentes
 import ConsultaButton from '../components/ConsultaButton';
 import ItemCard from '../components/ItemCard';
+import DateInput from '../components/DateInput';
+import CustomPicker, { PickerOption } from '../components/CustomPicker';
 
 // Importar serviços e tipos
 import {
-  buscarLicitacoes,
-  buscarDispensas,
+  buscarContratacoes,
+  TipoBusca,
+  ParamsBuscaContratacoes,
+  obterPrimeiroeUltimoDiaDoMes,
 } from '../api/pncpService';
-import type { Licitacao, Dispensa } from '../models/pncp';
+import type { Contratacao } from '../models/pncp';
 
 // Importar funções utilitárias
 import { formatarValor, formatarData } from '../utils/formatters';
 
+// Importar constantes
+import { ESTADOS_BRASIL, MODALIDADES } from '../config/api';
+
 /**
  * Componente principal da tela
- *
- * useState é um "hook" do React para gerenciar estado
- * Similar a propriedades privadas em C# que disparam eventos ao mudar
  */
 export default function HomeScreen() {
-  // Estados (similar a variáveis privadas em C#)
+  // ==================== ESTADOS ====================
+
+  // Abas
+  const [abaAtiva, setAbaAtiva] = useState<TipoBusca>('publicacao');
+
+  // Filtros
+  const [estadoSelecionado, setEstadoSelecionado] = useState<string>('');
+  const [modalidadeSelecionada, setModalidadeSelecionada] = useState<number>(MODALIDADES.PREGAO_ELETRONICO);
+  const [dataInicial, setDataInicial] = useState<string>('');
+  const [dataFinal, setDataFinal] = useState<string>('');
+
+  // Resultados e paginação
+  const [resultados, setResultados] = useState<Contratacao[]>([]);
+  const [paginaAtual, setPaginaAtual] = useState<number>(1);
+  const [totalPaginas, setTotalPaginas] = useState<number>(0);
+  const [totalRegistros, setTotalRegistros] = useState<number>(0);
   const [loading, setLoading] = useState(false);
-  const [tipoConsulta, setTipoConsulta] = useState<string>('');
-  const [licitacoes, setLicitacoes] = useState<Licitacao[]>([]);
-  const [dispensas, setDispensas] = useState<Dispensa[]>([]);
+
+  // ==================== INICIALIZAÇÃO ====================
+
+  React.useEffect(() => {
+    // Define datas padrão (mês atual) quando o componente carrega
+    const { dataInicial: di, dataFinal: df } = obterPrimeiroeUltimoDiaDoMes();
+    setDataInicial(formatarDateParaInput(di));
+    setDataFinal(formatarDateParaInput(df));
+  }, []);
+
+  // ==================== FUNÇÕES AUXILIARES ====================
 
   /**
-   * Função para consultar licitações
-   * Similar a um método privado async em C#
+   * Formata Date para string DD/MM/AAAA
    */
-  const consultarLicitacoes = async () => {
+  function formatarDateParaInput(date: Date): string {
+    const dia = String(date.getDate()).padStart(2, '0');
+    const mes = String(date.getMonth() + 1).padStart(2, '0');
+    const ano = date.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  /**
+   * Converte string DD/MM/AAAA para Date
+   */
+  function parseDataInput(dataStr: string): Date | null {
+    const parts = dataStr.split('/');
+    if (parts.length !== 3) return null;
+
+    const dia = parseInt(parts[0], 10);
+    const mes = parseInt(parts[1], 10) - 1;
+    const ano = parseInt(parts[2], 10);
+
+    if (isNaN(dia) || isNaN(mes) || isNaN(ano)) return null;
+
+    return new Date(ano, mes, dia);
+  }
+
+  /**
+   * Valida datas
+   */
+  function validarDatas(): boolean {
+    const di = parseDataInput(dataInicial);
+    const df = parseDataInput(dataFinal);
+
+    if (!di || !df) {
+      Alert.alert('Erro', 'Datas inválidas. Use o formato DD/MM/AAAA');
+      return false;
+    }
+
+    if (di > df) {
+      Alert.alert('Erro', 'Data inicial não pode ser maior que data final');
+      return false;
+    }
+
+    return true;
+  }
+
+  // ==================== BUSCA ====================
+
+  /**
+   * Realiza a busca com os filtros atuais
+   */
+  const realizarBusca = async (pagina: number = 1) => {
+    if (!validarDatas()) return;
+
     try {
       setLoading(true);
-      setTipoConsulta('licitacoes');
 
-      console.log('Buscando licitações...');
-      const dados = await buscarLicitacoes();
+      const di = parseDataInput(dataInicial)!;
+      const df = parseDataInput(dataFinal)!;
 
-      if (dados.length === 0) {
-        Alert.alert('Aviso', 'Nenhuma licitação encontrada.');
+      const params: ParamsBuscaContratacoes = {
+        dataInicial: di,
+        dataFinal: df,
+        codigoModalidade: modalidadeSelecionada,
+        uf: estadoSelecionado || undefined,
+        pagina,
+        tamanhoPagina: 100,
+      };
+
+      const response = await buscarContratacoes(abaAtiva, params);
+
+      setResultados(response.data || []);
+      setPaginaAtual(response.numeroPagina);
+      setTotalPaginas(response.totalPaginas);
+      setTotalRegistros(response.totalRegistros);
+
+      if (response.data.length === 0) {
+        Alert.alert('Aviso', 'Nenhum resultado encontrado para os filtros selecionados.');
       }
-
-      setLicitacoes(dados);
-      setDispensas([]);
     } catch (error) {
-      console.error('Erro ao buscar licitações:', error);
-      Alert.alert('Erro', 'Não foi possível buscar as licitações. Verifique sua conexão.');
+      console.error('Erro ao buscar:', error);
+      Alert.alert('Erro', 'Não foi possível buscar os dados. Verifique sua conexão.');
     } finally {
       setLoading(false);
     }
   };
 
   /**
-   * Função para consultar dispensas
+   * Navega para próxima página
    */
-  const consultarDispensas = async () => {
-    try {
-      setLoading(true);
-      setTipoConsulta('dispensas');
-
-      console.log('Buscando dispensas...');
-      const dados = await buscarDispensas();
-
-      if (dados.length === 0) {
-        Alert.alert('Aviso', 'Nenhuma dispensa encontrada.');
-      }
-
-      setDispensas(dados);
-      setLicitacoes([]);
-    } catch (error) {
-      console.error('Erro ao buscar dispensas:', error);
-      Alert.alert('Erro', 'Não foi possível buscar as dispensas. Verifique sua conexão.');
-    } finally {
-      setLoading(false);
+  const proximaPagina = () => {
+    if (paginaAtual < totalPaginas) {
+      realizarBusca(paginaAtual + 1);
     }
   };
 
   /**
-   * Retorna os dados a serem exibidos baseado no tipo de consulta
+   * Navega para página anterior
    */
-  const getDados = (): (Licitacao | Dispensa)[] => {
-    if (tipoConsulta === 'licitacoes') {
-      return licitacoes;
-    } else if (tipoConsulta === 'dispensas') {
-      return dispensas;
+  const paginaAnterior = () => {
+    if (paginaAtual > 1) {
+      realizarBusca(paginaAtual - 1);
     }
-    return [];
   };
+
+  // ==================== OPÇÕES DOS PICKERS ====================
+
+  const opcoesEstado: PickerOption[] = ESTADOS_BRASIL.map(e => ({
+    label: e.nome,
+    value: e.sigla,
+  }));
+
+  const opcoesModalidade: PickerOption[] = [
+    { label: 'Pregão Eletrônico', value: MODALIDADES.PREGAO_ELETRONICO },
+    { label: 'Pregão Presencial', value: MODALIDADES.PREGAO_PRESENCIAL },
+    { label: 'Dispensa', value: MODALIDADES.DISPENSA },
+    { label: 'Inexigibilidade', value: MODALIDADES.INEXIGIBILIDADE },
+    { label: 'Concorrência Eletrônica', value: MODALIDADES.CONCORRENCIA_ELETRONICA },
+    { label: 'Concorrência Presencial', value: MODALIDADES.CONCORRENCIA_PRESENCIAL },
+    { label: 'Leilão Eletrônico', value: MODALIDADES.LEILAO_ELETRONICO },
+    { label: 'Leilão Presencial', value: MODALIDADES.LEILAO_PRESENCIAL },
+    { label: 'Concurso', value: MODALIDADES.CONCURSO },
+    { label: 'Diálogo Competitivo', value: MODALIDADES.DIALOGO_COMPETITIVO },
+    { label: 'Credenciamento', value: MODALIDADES.CREDENCIAMENTO },
+    { label: 'Pré-qualificação', value: MODALIDADES.PRE_QUALIFICACAO },
+    { label: 'Manifestação de Interesse', value: MODALIDADES.MANIFESTACAO_INTERESSE },
+    { label: 'Chamada Pública', value: MODALIDADES.CHAMADA_PUBLICA },
+    { label: 'Inaplicabilidade', value: MODALIDADES.INAPLICABILIDADE },
+  ];
+
+  // ==================== RENDERIZAÇÃO ====================
 
   /**
    * Renderiza um item da lista
    */
-  const renderItem = ({ item, index }: { item: Licitacao | Dispensa; index: number }) => {
-    if (tipoConsulta === 'licitacoes') {
-      const licitacao = item as Licitacao;
-      return (
-        <ItemCard
-          titulo={`Licitação ${licitacao.numeroCompra || 'N/A'}`}
-          itens={[
-            { label: 'Órgão', value: licitacao.orgaoEntidade?.razaoSocial || 'N/A' },
-            { label: 'Objeto', value: licitacao.objetoCompra || 'N/A' },
-            {
-              label: 'Valor Estimado',
-              value: formatarValor(licitacao.valorTotalEstimado),
-            },
-            {
-              label: 'Data Publicação',
-              value: formatarData(licitacao.dataPublicacaoPncp),
-            },
-            { label: 'Modalidade', value: licitacao.modalidadeNome || 'N/A' },
-            { label: 'Situação', value: licitacao.situacaoCompra || 'N/A' },
-          ]}
-        />
-      );
-    } else if (tipoConsulta === 'dispensas') {
-      const dispensa = item as Dispensa;
-      return (
-        <ItemCard
-          titulo={`Dispensa ${dispensa.numeroCompra || 'N/A'}`}
-          itens={[
-            { label: 'Órgão', value: dispensa.orgaoEntidade?.razaoSocial || 'N/A' },
-            { label: 'Objeto', value: dispensa.objetoCompra || 'N/A' },
-            {
-              label: 'Valor Estimado',
-              value: formatarValor(dispensa.valorTotalEstimado),
-            },
-            {
-              label: 'Data Publicação',
-              value: formatarData(dispensa.dataPublicacaoPncp),
-            },
-            {
-              label: 'Fundamentação Legal',
-              value: dispensa.fundamentacaoLegal?.descricao || 'N/A',
-            },
-            { label: 'Situação', value: dispensa.situacaoCompra || 'N/A' },
-          ]}
-        />
-      );
-    }
-    return null;
-  };
-
-  /**
-   * Renderiza o cabeçalho da lista (header + botões)
-   */
-  const renderHeader = () => (
-    <>
-      {/* Cabeçalho */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Consulta PNCP</Text>
-        <Text style={styles.subtitle}>
-          Portal Nacional de Contratações Públicas
-        </Text>
-      </View>
-
-      {/* Botões de Consulta */}
-      <View style={styles.buttonsContainer}>
-        <ConsultaButton
-          titulo="Consultar Licitações"
-          onPress={consultarLicitacoes}
-          loading={loading && tipoConsulta === 'licitacoes'}
-          cor="#1E40AF"
-        />
-
-        <ConsultaButton
-          titulo="Consultar Dispensas"
-          onPress={consultarDispensas}
-          loading={loading && tipoConsulta === 'dispensas'}
-          cor="#DC2626"
-        />
-      </View>
-    </>
+  const renderItem = ({ item }: { item: Contratacao }) => (
+    <ItemCard
+      titulo={`${item.modalidadeNome || 'N/A'} ${item.numeroCompra || ''}`}
+      itens={[
+        { label: 'Órgão', value: item.orgaoEntidade?.razaoSocial || 'N/A' },
+        { label: 'Objeto', value: item.objetoCompra || 'N/A' },
+        { label: 'Valor Estimado', value: formatarValor(item.valorTotalEstimado) },
+        { label: 'Data Publicação', value: formatarData(item.dataPublicacaoPncp) },
+        { label: 'UF', value: item.unidadeOrgao?.ufSigla || 'N/A' },
+        { label: 'Município', value: item.unidadeOrgao?.municipioNome || 'N/A' },
+        { label: 'Situação', value: item.situacaoCompraNome || 'N/A' },
+      ]}
+    />
   );
 
   /**
-   * Renderização da interface (JSX - similar a XAML em WPF)
-   * Usa FlatList única para evitar erro de VirtualizedList aninhado
+   * Renderiza o cabeçalho (abas + filtros)
    */
+  const renderHeader = () => (
+    <View>
+      {/* Cabeçalho */}
+      <View style={styles.header}>
+        <Text style={styles.title}>Consulta PNCP</Text>
+        <Text style={styles.subtitle}>Portal Nacional de Contratações Públicas</Text>
+      </View>
+
+      {/* Abas */}
+      <View style={styles.tabsContainer}>
+        <TouchableOpacity
+          style={[styles.tab, abaAtiva === 'publicacao' && styles.tabActive]}
+          onPress={() => setAbaAtiva('publicacao')}
+        >
+          <Text style={[styles.tabText, abaAtiva === 'publicacao' && styles.tabTextActive]}>
+            Por Publicação
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, abaAtiva === 'proposta' && styles.tabActive]}
+          onPress={() => setAbaAtiva('proposta')}
+        >
+          <Text style={[styles.tabText, abaAtiva === 'proposta' && styles.tabTextActive]}>
+            Por Proposta
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Filtros */}
+      <View style={styles.filtersContainer}>
+        <CustomPicker
+          label="Estado"
+          value={estadoSelecionado}
+          onValueChange={(value) => setEstadoSelecionado(String(value))}
+          options={opcoesEstado}
+        />
+
+        <CustomPicker
+          label="Modalidade"
+          value={modalidadeSelecionada}
+          onValueChange={(value) => setModalidadeSelecionada(Number(value))}
+          options={opcoesModalidade}
+        />
+
+        <DateInput
+          label="Data Inicial"
+          value={dataInicial}
+          onChangeText={setDataInicial}
+        />
+
+        <DateInput
+          label="Data Final"
+          value={dataFinal}
+          onChangeText={setDataFinal}
+        />
+
+        <ConsultaButton
+          titulo="Buscar"
+          onPress={() => realizarBusca(1)}
+          loading={loading}
+          cor="#1E40AF"
+        />
+
+        {/* Info de resultados */}
+        {totalRegistros > 0 && (
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoText}>
+              {totalRegistros} registro(s) encontrado(s)
+            </Text>
+            <Text style={styles.infoText}>
+              Página {paginaAtual} de {totalPaginas}
+            </Text>
+          </View>
+        )}
+      </View>
+    </View>
+  );
+
+  /**
+   * Renderiza os botões de paginação no rodapé
+   */
+  const renderFooter = () => {
+    if (resultados.length === 0) return null;
+
+    return (
+      <View style={styles.paginationContainer}>
+        <TouchableOpacity
+          style={[styles.pageButton, paginaAtual === 1 && styles.pageButtonDisabled]}
+          onPress={paginaAnterior}
+          disabled={paginaAtual === 1 || loading}
+        >
+          <Text style={styles.pageButtonText}>← Anterior</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.pageInfo}>
+          {paginaAtual} / {totalPaginas}
+        </Text>
+
+        <TouchableOpacity
+          style={[styles.pageButton, paginaAtual === totalPaginas && styles.pageButtonDisabled]}
+          onPress={proximaPagina}
+          disabled={paginaAtual === totalPaginas || loading}
+        >
+          <Text style={styles.pageButtonText}>Próxima →</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // ==================== RENDERIZAÇÃO PRINCIPAL ====================
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={getDados()}
-        keyExtractor={(item, index) => `${tipoConsulta}-${index}`}
+        data={resultados}
+        keyExtractor={(item, index) => `${item.numeroControlePNCP || index}`}
         renderItem={renderItem}
         ListHeaderComponent={renderHeader}
+        ListFooterComponent={renderFooter}
         contentContainerStyle={styles.listContent}
         ListEmptyComponent={
-          tipoConsulta ? (
+          !loading && resultados.length === 0 ? (
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Nenhum resultado encontrado</Text>
+              <Text style={styles.emptyText}>
+                {totalRegistros === 0 && paginaAtual > 0
+                  ? 'Nenhum resultado encontrado'
+                  : 'Use os filtros acima e clique em "Buscar"'}
+              </Text>
             </View>
           ) : null
         }
       />
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#1E40AF" />
+        </View>
+      )}
     </SafeAreaView>
   );
 }
 
-/**
- * Estilos da tela
- */
+// ==================== ESTILOS ====================
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -243,10 +396,47 @@ const styles = StyleSheet.create({
     color: '#E0E7FF',
     textAlign: 'center',
   },
-  buttonsContainer: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 16,
+  tabsContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 16,
+    alignItems: 'center',
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
+  },
+  tabActive: {
+    borderBottomColor: '#1E40AF',
+  },
+  tabText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#6B7280',
+  },
+  tabTextActive: {
+    color: '#1E40AF',
+  },
+  filtersContainer: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  infoContainer: {
+    marginTop: 12,
+    padding: 12,
+    backgroundColor: '#EFF6FF',
+    borderRadius: 8,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#1E40AF',
+    textAlign: 'center',
+    marginBottom: 4,
   },
   emptyContainer: {
     flex: 1,
@@ -258,5 +448,43 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#6B7280',
     textAlign: 'center',
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB',
+  },
+  pageButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: '#1E40AF',
+    borderRadius: 8,
+  },
+  pageButtonDisabled: {
+    backgroundColor: '#D1D5DB',
+  },
+  pageButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  pageInfo: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#374151',
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
