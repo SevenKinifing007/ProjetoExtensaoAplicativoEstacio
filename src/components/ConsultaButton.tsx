@@ -30,7 +30,7 @@ export default function ConsultaButton({
   titulo,
   onPress,
   loading = false,
-  cor = '#1E40AF',
+  cor = '#E31937', // Vermelho Flamengo
 }: ConsultaButtonProps) {
   return (
     <TouchableOpacity

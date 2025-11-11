@@ -27,7 +27,7 @@ export default function MenuScreen({ onNavigate }: MenuScreenProps) {
         {/* Cabeçalho */}
         <View style={styles.header}>
           <Text style={styles.title}>PNCP</Text>
-          <Text style={styles.subtitle}>Portal Nacional de Contratações Públicas</Text>
+          <Text style={styles.subtitle}>Consulta de dados de Licitações, Dispensas e Contratos junto ao PNCP</Text>
         </View>
 
         {/* Botões do Menu */}
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   header: {
-    backgroundColor: '#1E40AF',
+    backgroundColor: '#000000', // Preto Flamengo
     paddingVertical: 48,
     paddingHorizontal: 24,
     alignItems: 'center',
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: '#E0E7FF',
+    color: '#CCCCCC',
     textAlign: 'center',
   },
   menuContainer: {
@@ -128,13 +128,13 @@ const styles = StyleSheet.create({
     borderLeftWidth: 6,
   },
   button1: {
-    borderLeftColor: '#10B981', // Verde
+    borderLeftColor: '#E31937', // Vermelho Flamengo
   },
   button2: {
-    borderLeftColor: '#F59E0B', // Laranja
+    borderLeftColor: '#000000', // Preto Flamengo
   },
   button3: {
-    borderLeftColor: '#1E40AF', // Azul
+    borderLeftColor: '#E31937', // Vermelho Flamengo
   },
   buttonIcon: {
     fontSize: 32,
